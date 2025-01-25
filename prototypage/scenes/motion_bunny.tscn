@@ -1,14 +1,14 @@
 [gd_scene load_steps=4 format=3 uid="uid://drm3dtrk0nyca"]
 
-[ext_resource type="ArrayMesh" uid="uid://bgtcimsgyrj4h" path="res://prototypage/models/stanford-bunny.obj" id="1_l6aii"]
-[ext_resource type="Script" path="res://prototypage/scripts/socketclient.gd" id="2_20gd0"]
-[ext_resource type="Script" path="res://prototypage/scripts/DebugDraw.gd" id="3_3chm1"]
+[ext_resource type="ArrayMesh" uid="uid://bgtcimsgyrj4h" path="res://prototypage/models/stanford-bunny.obj" id="1_vgyjt"]
+[ext_resource type="Script" path="res://prototypage/scripts/socketclient.gd" id="2_cxhc6"]
+[ext_resource type="Script" path="res://prototypage/scripts/DebugDraw.gd" id="3_hqcas"]
 
 [node name="3Dtest" type="Node3D"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = ExtResource("1_l6aii")
-script = ExtResource("2_20gd0")
+mesh = ExtResource("1_vgyjt")
+script = ExtResource("2_cxhc6")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00668436, 0, 1.01695)
@@ -17,5 +17,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00668436, 0, 1.01695)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.547323, 1.91568)
 
 [node name="Node3D" type="Node3D" parent="." node_paths=PackedStringArray("other_node")]
-script = ExtResource("3_3chm1")
+script = ExtResource("3_hqcas")
 other_node = NodePath("../MeshInstance3D")
