@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://bhcrpvvrss881"]
+
+[ext_resource type="Texture2D" uid="uid://bb10gfp5h3kqk" path="res://assets/graphics/square.png" id="1_sbpvf"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pa6ve"]
+friction = 0.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p0o3w"]
+size = Vector2(128, 128)
+
+[node name="RectangleWall" type="StaticBody2D"]
+position = Vector2(533, 383)
+scale = Vector2(4, 1)
+physics_material_override = SubResource("PhysicsMaterial_pa6ve")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_p0o3w")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 1, 0, 1)
+texture = ExtResource("1_sbpvf")
