@@ -7,5 +7,11 @@
 
 [node name="Player" parent="." instance=ExtResource("1_6nthd")]
 position = Vector2(281, 186)
+player_id = 1
 
 [node name="RectangleWall" parent="." instance=ExtResource("2_1eklx")]
+position = Vector2(527, 534)
+scale = Vector2(4.12, 0.56)
+
+[node name="Player2" parent="." instance=ExtResource("1_6nthd")]
+position = Vector2(514, 184)

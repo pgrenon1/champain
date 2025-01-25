@@ -8,7 +8,7 @@ friction = 0.0
 bounce = 0.5
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7ghod"]
-radius = 47.1699
+radius = 253.18
 
 [node name="Player" type="RigidBody2D"]
 physics_material_override = SubResource("PhysicsMaterial_p470m")
@@ -21,8 +21,9 @@ speed = 700
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.189981, 0.189981)
+scale = Vector2(0.1, 0.1)
 texture = ExtResource("2_g87fq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.1, 0.1)
 shape = SubResource("CircleShape2D_7ghod")

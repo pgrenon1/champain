@@ -2,16 +2,17 @@ extends RigidBody2D
 
 @export var speed = 400
 @export var player_id = 0
-# Called when the node enters the scene tree for the first time.
+var validated_checkpoints = []
+
 func _ready() -> void:
-	pass # Replace with function body.
-
-
+	pass
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	var direction = get_viewport().get_mouse_position() - position
+	var direction = position - get_viewport().get_mouse_position()
 	direction = direction.normalized()
-	if Input.is_action_just_pressed("move"):
+	if Input.is_action_just_pressed("move" + str(player_id)):
 		apply_impulse(direction * speed)
-	#move_and_collide()
+	pass
+
+func validate_checkpoint(id: int):
 	pass
