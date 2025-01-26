@@ -32,6 +32,7 @@ func goal_scored(team_id: int):
 	_team_scores[team_id] += 1
 	_score_left.text = str(_team_scores[1])
 	_score_right.text = str(_team_scores[0])
+	_announcer.visible = true
 	_announcer.text = "GOAL!"
 
 	_ball.set_linear_velocity(Vector2())
