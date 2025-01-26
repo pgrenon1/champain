@@ -10,6 +10,7 @@ class_name Player extends RigidBody2D
 @export var player_id = 0
 @export var _sprite: Sprite2D
 @export var _label: Label
+@export var bottle: Bottle
 var _original_scale
 @export var use_mouse = false
 var _spray_timer = 0.0
@@ -26,7 +27,7 @@ signal on_stop_spraying()
 
 func _ready() -> void:
 	_original_scale = _sprite.scale
-	_label.text = str(_shake_count)
+	_label.text = ""
 	
 	
 func _process(delta: float) -> void:
@@ -74,14 +75,14 @@ func _physics_process(delta: float) -> void:
 		if _spray_timer <= 0:
 			_is_spraying = false
 			on_stop_spraying.emit()
-			_label.text = str(_shake_count)
 
 func _shake():
 	if _shake_count < spray_shake_max_count:
 		_shake_count += 1
-		_label.text = str(_shake_count)
-	else:
-		_label.text = "MAX"
+		bottle.shake_once()
+		if _shake_count >= spray_shake_max_count:
+			_label.text = "MAX!"
+		
 		
 	sync_bottle_shake()
 
@@ -90,8 +91,8 @@ func sync_bottle_shake():
 
 func _start_spraying(direction: Vector2):
 	_is_spraying = true
+	_label.text = ""
 	var pop_power = _shake_count/float(spray_shake_max_count)
-	_label.text = "POP!"
 	var impulse = lerp(0, spray_max_impulse, pop_power)
 	_spray_force = lerp(0, spray_max_force, pop_power)
 	_spray_timer = lerp(0.0, spray_max_duration, pop_power)
@@ -111,4 +112,3 @@ func validate_lap():
 	_sprite.scale = _original_scale * 2
 	var tween = get_tree().create_tween()
 	tween.tween_property(_sprite, "scale", _original_scale, 0.2)
-	print("player " + str(player_id) + " finishes lap " + str(lap_count))
