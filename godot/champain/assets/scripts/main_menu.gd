@@ -11,5 +11,8 @@ func _process(delta):
 	pass
 
 
-func _on_play_button_down():
+func _on_soccer_button_down():
 	Global.goto_scene("res://assets/scenes/levels/soccer_1.tscn")
+
+func _on_race_button_down():
+	Global.goto_scene("res://assets/scenes/levels/race_1.tscn")

@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://nemyswgvobc8"]
+[gd_scene load_steps=5 format=3 uid="uid://boq2gcuxxoc13"]
 
 [ext_resource type="Script" path="res://assets/scripts/ball.gd" id="1_rutid"]
-[ext_resource type="Texture2D" uid="uid://cu57xwmw3sqsy" path="res://assets/graphics/circle.png" id="2_v2ecf"]
+[ext_resource type="Texture2D" uid="uid://div6pvaykqcd0" path="res://assets/graphics/ufoYellow.png" id="2_hbugr"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_susp4"]
 friction = 0.0
@@ -20,9 +20,9 @@ linear_damp = 0.8
 script = ExtResource("1_rutid")
 metadata/_edit_group_ = true
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("2_v2ecf")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_ns7lk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.625, 1.625)
+texture = ExtResource("2_hbugr")

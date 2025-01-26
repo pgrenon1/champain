@@ -1,88 +1,122 @@
-[gd_scene load_steps=7 format=3 uid="uid://mhd0taubfps2"]
+[gd_scene load_steps=8 format=3 uid="uid://mhd0taubfps2"]
 
 [ext_resource type="PackedScene" uid="uid://0uvlnkkx62ml" path="res://assets/scenes/race_finish.tscn" id="1_u32ff"]
 [ext_resource type="PackedScene" uid="uid://boyg2fihjlwv0" path="res://assets/scenes/race_checkpoint.tscn" id="2_bmqk6"]
-[ext_resource type="PackedScene" uid="uid://b1qu7gq1j4y0u" path="res://assets/scenes/player.tscn" id="3_slunm"]
-[ext_resource type="PackedScene" uid="uid://djm4pxyo2siii" path="res://assets/scenes/bouncy_wall.tscn" id="4_pfkx0"]
+[ext_resource type="PackedScene" path="res://assets/scenes/bouncy_wall.tscn" id="4_pfkx0"]
+[ext_resource type="PackedScene" uid="uid://r363kwfebbi" path="res://assets/scenes/spawn.tscn" id="5_vpj2r"]
 [ext_resource type="PackedScene" uid="uid://bhcrpvvrss881" path="res://assets/scenes/rectangle_wall.tscn" id="5_wwgn7"]
-[ext_resource type="PackedScene" path="res://assets/scenes/controllers.tscn" id="6_l7nbv"]
+[ext_resource type="FontFile" uid="uid://b8irqbncrt45c" path="res://assets/Quicksand-Bold.ttf" id="6_k2ybq"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_4lx5r"]
+font = ExtResource("6_k2ybq")
+font_size = 128
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Race1" type="Node2D"]
 
-[node name="RaceFinish" parent="." instance=ExtResource("1_u32ff")]
+[node name="Parcours" type="Node2D" parent="."]
+scale = Vector2(1.56, 1.56)
+
+[node name="RaceFinish" parent="Parcours" instance=ExtResource("1_u32ff")]
 position = Vector2(99, 464)
 scale = Vector2(1.68, 0.4)
 
-[node name="RaceCheckpoint" parent="." instance=ExtResource("2_bmqk6")]
+[node name="RaceCheckpoint" parent="Parcours" instance=ExtResource("2_bmqk6")]
 position = Vector2(524, 367)
 scale = Vector2(0.36, 1.6)
 
-[node name="RaceCheckpoint2" parent="." instance=ExtResource("2_bmqk6")]
+[node name="RaceCheckpoint2" parent="Parcours" instance=ExtResource("2_bmqk6")]
 position = Vector2(840, 586)
 scale = Vector2(0.32, 1.56)
 
-[node name="Player" parent="." instance=ExtResource("3_slunm")]
-position = Vector2(43, 591)
-
-[node name="Player2" parent="." instance=ExtResource("3_slunm")]
-position = Vector2(57, 490)
-player_id = 1
-
-[node name="Player3" parent="." instance=ExtResource("3_slunm")]
-position = Vector2(161, 490)
-player_id = 2
-
-[node name="Player4" parent="." instance=ExtResource("3_slunm")]
-position = Vector2(160, 589)
-player_id = 3
-
-[node name="Player5" parent="." instance=ExtResource("3_slunm")]
-position = Vector2(252, 530)
-player_id = 4
-
-[node name="BouncyWall" parent="." instance=ExtResource("4_pfkx0")]
+[node name="BouncyWall" parent="Parcours" instance=ExtResource("4_pfkx0")]
 position = Vector2(1150, 594)
 rotation = 2.09439
 scale = Vector2(2.70765, 1.32778)
 
-[node name="RectangleWall" parent="." instance=ExtResource("5_wwgn7")]
+[node name="RectangleWall" parent="Parcours" instance=ExtResource("5_wwgn7")]
 position = Vector2(-44, 340)
 scale = Vector2(0.720003, 5.92)
 
-[node name="RectangleWall6" parent="." instance=ExtResource("5_wwgn7")]
+[node name="RectangleWall6" parent="Parcours" instance=ExtResource("5_wwgn7")]
 position = Vector2(212, 330)
 scale = Vector2(0.200003, 2.4238)
 
-[node name="RectangleWall7" parent="." instance=ExtResource("5_wwgn7")]
+[node name="RectangleWall7" parent="Parcours" instance=ExtResource("5_wwgn7")]
 position = Vector2(525, 116)
 scale = Vector2(0.200003, 2.4238)
 
-[node name="RectangleWall8" parent="." instance=ExtResource("5_wwgn7")]
+[node name="RectangleWall8" parent="Parcours" instance=ExtResource("5_wwgn7")]
 position = Vector2(850, 331)
 scale = Vector2(0.200003, 2.4238)
 
-[node name="RectangleWall4" parent="." instance=ExtResource("5_wwgn7")]
+[node name="RectangleWall4" parent="Parcours" instance=ExtResource("5_wwgn7")]
 position = Vector2(1199, 343)
 scale = Vector2(0.720003, 5.92)
 
-[node name="RectangleWall2" parent="." instance=ExtResource("5_wwgn7")]
+[node name="RectangleWall2" parent="Parcours" instance=ExtResource("5_wwgn7")]
 position = Vector2(582, 686)
 scale = Vector2(10.64, 0.56)
 
-[node name="RectangleWall5" parent="." instance=ExtResource("5_wwgn7")]
+[node name="RectangleWall5" parent="Parcours" instance=ExtResource("5_wwgn7")]
 position = Vector2(531, 475)
 scale = Vector2(5.2, 0.2)
 
-[node name="RectangleWall9" parent="." instance=ExtResource("5_wwgn7")]
+[node name="RectangleWall9" parent="Parcours" instance=ExtResource("5_wwgn7")]
 position = Vector2(263, 187)
 scale = Vector2(0.8, 0.2)
 
-[node name="RectangleWall10" parent="." instance=ExtResource("5_wwgn7")]
+[node name="RectangleWall10" parent="Parcours" instance=ExtResource("5_wwgn7")]
 position = Vector2(477, 188)
 scale = Vector2(0.76, 0.2)
 
-[node name="RectangleWall3" parent="." instance=ExtResource("5_wwgn7")]
+[node name="RectangleWall3" parent="Parcours" instance=ExtResource("5_wwgn7")]
 position = Vector2(562, -35.0001)
 scale = Vector2(10.64, 0.56)
 
-[node name="Controllers" parent="." instance=ExtResource("6_l7nbv")]
+[node name="SpawnPositions" type="Node2D" parent="Parcours" groups=["spawn_positions"]]
+position = Vector2(-40, -16)
+
+[node name="Spawn" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
+position = Vector2(54.7436, 478.18)
+
+[node name="Spawn2" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
+position = Vector2(75.2564, 477.538)
+
+[node name="Spawn3" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
+position = Vector2(96.4102, 477.538)
+
+[node name="Spawn4" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
+position = Vector2(116.923, 478.18)
+
+[node name="Spawn5" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
+position = Vector2(139.359, 478.18)
+
+[node name="Spawn6" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
+position = Vector2(157.949, 478.821)
+
+[node name="Spawn7" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
+position = Vector2(175.897, 478.821)
+
+[node name="Spawn8" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
+position = Vector2(197.692, 475.615)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Announcer" type="Label" parent="CanvasLayer/CenterContainer"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(900, 0)
+layout_mode = 2
+text = "PLAYER x WINS!"
+label_settings = SubResource("LabelSettings_4lx5r")
+horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
