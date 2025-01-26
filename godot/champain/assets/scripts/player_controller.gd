@@ -65,7 +65,7 @@ func _physics_process(delta: float) -> void:
 func _start_spraying(direction: Vector2):
 	_is_spraying = true
 	var pop_power = _shake_count/float(spray_shake_max_count)
-	print("P" + str(player_id) + " pop power: " + str(pop_power) + str(spray_max_duration))
+	print("P" + str(player_id) + " pop power: " + str(pop_power))
 	var impulse = lerp(spray_min_impulse, spray_max_impulse, pop_power)
 	_spray_force = lerp(spray_min_force, spray_max_force, pop_power)
 	_spray_timer = lerp(spray_min_duration, spray_max_duration, pop_power)
