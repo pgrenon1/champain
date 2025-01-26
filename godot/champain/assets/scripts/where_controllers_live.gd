@@ -12,31 +12,63 @@ var _current_frame_shakes = {}  # Shakes that happened this frame
 var _last_frame_shakes = {}    # Shakes that happened last frame
 var _shake_timestamps = {}     # Last shake timestamp per player
 
+var _current_frame_pops = {}    # Pops that happened this frame
+var _last_frame_pops = {}      # Pops that happened last frame
+var _pop_timestamps = {}       # Last pop timestamp per player
+
 func _ready():
 	self.instance = self
-	
 	
 func clear_logic():
 	# await end of frame to clear logic
 	await get_tree().process_frame
 	_last_frame_shakes = _current_frame_shakes.duplicate()
 	_current_frame_shakes.clear()
+	_last_frame_pops = _current_frame_pops.duplicate()
+	_current_frame_pops.clear()
 
 func _process(_delta):
 	self.clear_logic.call_deferred()
 
-# Input interface methods
-static func get_shake_down(player_num: int) -> bool:
-
+static func get_pop_down(player_num: int) -> bool:
 	if not is_instance_valid(instance):
 		return false
 	
 	if player_num >= instance.player_ids.size():
 		return false
 		
-
 	var player_id = instance.player_ids[player_num]
+	return player_id in instance._current_frame_pops
+
+static func get_pop_up(player_num: int) -> bool:
+	if not is_instance_valid(instance):
+		return false
 	
+	if player_num >= instance.player_ids.size():
+		return false
+		
+	var player_id = instance.player_ids[player_num]
+	return player_id in instance._last_frame_pops and not player_id in instance._current_frame_pops
+
+static func get_pop(player_num: int) -> bool:
+	if not is_instance_valid(instance):
+		return false
+	
+	if player_num >= instance.player_ids.size():
+		return false
+		
+	var player_id = instance.player_ids[player_num]
+	return player_id in instance._last_frame_pops
+
+# Input interface methods
+static func get_shake_down(player_num: int) -> bool:
+	if not is_instance_valid(instance):
+		return false
+	
+	if player_num >= instance.player_ids.size():
+		return false
+		
+	var player_id = instance.player_ids[player_num]
 	return player_id in instance._current_frame_shakes
 
 static func get_shake_up(player_num: int) -> bool:
@@ -91,6 +123,10 @@ func get_player_angle(player_num: int) -> float:
 func _on_shake(player_id, timestamp):
 	_current_frame_shakes[player_id] = true
 	_shake_timestamps[player_id] = timestamp
+	
+func _on_pop(player_id, timestamp):
+	_current_frame_pops[player_id] = true
+	_pop_timestamps[player_id] = timestamp
 
 func _on_node_2d_message_received(address, value, time):
 	if address == '/quaternion':
@@ -102,3 +138,9 @@ func _on_node_2d_message_received(address, value, time):
 		var player_id = value[0]
 		var timestamp = value[1].to_int()
 		_on_shake(player_id, timestamp)
+		
+	if address == '/pop':
+		print(address, value, time)
+		var player_id = value[0]
+		var timestamp = value[1].to_int()
+		_on_pop(player_id, timestamp)

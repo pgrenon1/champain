@@ -63,7 +63,7 @@ func _physics_process(delta: float) -> void:
 				_shake_count += 1
 				print("P" + str(player_id) + ": " + str(_shake_count) + "shakes")
 			
-		if !_is_spraying and false: #& controller pop
+		if !_is_spraying and ControllerManager.instance.get_pop_down(player_id):
 			_start_spraying(direction)
 	
 	if _is_spraying:
