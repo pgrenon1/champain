@@ -1,8 +1,9 @@
-[gd_scene load_steps=16 format=4 uid="uid://bb0gmvwsjot1o"]
+[gd_scene load_steps=17 format=4 uid="uid://bb0gmvwsjot1o"]
 
 [ext_resource type="Texture2D" uid="uid://dmdqi552k3mcw" path="res://assets/graphics/purple.png" id="1_1vs3r"]
 [ext_resource type="Texture2D" uid="uid://n3c0o7ssly40" path="res://assets/graphics/sheet.png" id="2_hc085"]
 [ext_resource type="Texture2D" uid="uid://b4difdaxqvtmk" path="res://assets/graphics/planet06.png" id="3_25n1x"]
+[ext_resource type="Texture2D" uid="uid://dw6q2uskpgf5b" path="res://assets/graphics/meteors/meteorGrey_tiny2.png" id="4_yd80w"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_s2e3p"]
 texture = ExtResource("1_1vs3r")
@@ -33,6 +34,33 @@ terrain_set_0/terrain_0/name = "Terrain 0"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
 sources/0 = SubResource("TileSetAtlasSource_74kph")
 
+[sub_resource type="Animation" id="Animation_p5b27"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-215, 1316)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.333358]
+}
+
 [sub_resource type="Animation" id="Animation_gm2jh"]
 resource_name = "new_animation"
 length = 140.0
@@ -60,33 +88,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [0.0, 0.427606, 0.427606]
-}
-
-[sub_resource type="Animation" id="Animation_p5b27"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-215, 1316)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.333358]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_s2tth"]
@@ -123,8 +124,7 @@ radial_velocity_min = 639.28
 radial_velocity_max = 749.99
 gravity = Vector3(0, 0, 0)
 radial_accel_curve = SubResource("CurveTexture_gpu5m")
-scale_min = 17.07
-scale_max = 101.0
+scale_max = 2.0
 
 [node name="ENV" type="Node2D"]
 
@@ -154,4 +154,5 @@ libraries = {
 z_index = -95
 position = Vector2(2012, 1290)
 process_material = SubResource("ParticleProcessMaterial_kdceq")
+texture = ExtResource("4_yd80w")
 lifetime = 10.0
