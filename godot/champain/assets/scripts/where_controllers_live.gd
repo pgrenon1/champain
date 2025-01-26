@@ -140,7 +140,6 @@ func _on_node_2d_message_received(address, value, time):
 		_on_shake(player_id, timestamp)
 		
 	if address == '/pop':
-		print(address, value, time)
 		var player_id = value[0]
 		var timestamp = value[1].to_int()
 		_on_pop(player_id, timestamp)
