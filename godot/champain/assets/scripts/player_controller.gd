@@ -13,8 +13,8 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	var player_pointing_angle = ControllerManager.instance.get_player_angle(player_id)
 	$debug.global_rotation = player_pointing_angle
-	var direction = position - get_viewport().get_mouse_position()
-	direction = direction.normalized()
+	#var direction = position - get_viewport().get_mouse_position()
+	#direction = direction.normalized()
 	
 	direction = Vector2.from_angle(player_pointing_angle)
 	
