@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://b1qu7gq1j4y0u"]
+[gd_scene load_steps=11 format=3 uid="uid://b1qu7gq1j4y0u"]
 
 [ext_resource type="Script" path="res://assets/scripts/player_controller.gd" id="1_h6qqu"]
 [ext_resource type="Texture2D" uid="uid://ddty3uka0djv6" path="res://assets/graphics/players/green.png" id="2_41de8"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bxignvq60u5h8" path="res://assets/graphics/players/blue.png" id="5_7cqra"]
 [ext_resource type="Texture2D" uid="uid://cjtqq2ee0p373" path="res://assets/graphics/players/pink.png" id="6_pg1nv"]
 [ext_resource type="Texture2D" uid="uid://bdistmynmx5pb" path="res://assets/graphics/players/yellow.png" id="7_ppmdj"]
+[ext_resource type="Texture2D" uid="uid://vtlesceds08y" path="res://assets/graphics/ray.png" id="8_0givg"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_p470m"]
 friction = 0.0
@@ -39,3 +40,7 @@ sprites = Array[Texture2D]([ExtResource("4_cmnmq"), ExtResource("5_7cqra"), ExtR
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(0.1, 0.1)
 shape = SubResource("CircleShape2D_7ghod")
+
+[node name="debug" type="Sprite2D" parent="."]
+texture = ExtResource("8_0givg")
+offset = Vector2(50, 0)

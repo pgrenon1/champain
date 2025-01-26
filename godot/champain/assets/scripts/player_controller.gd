@@ -1,5 +1,6 @@
 class_name Player extends RigidBody2D
 
+@export var debug = false
 @export var speed = 400
 @export var spray_shake_max_count = 20
 @export var spray_min_impulse = 0
@@ -25,6 +26,9 @@ var player_controller
 func _ready() -> void:
 	_original_scale = _sprite.scale
 	pass
+	
+func _process(delta: float) -> void:
+	$debug.visible = self.debug
 	
 func _physics_process(delta: float) -> void:
 	var player_pointing_angle
