@@ -31,6 +31,12 @@ func _process(delta: float) -> void:
 	$debug.visible = self.debug
 	
 func _physics_process(delta: float) -> void:
+	if not (ControllerManager.instance != null):
+		return
+	
+	if ControllerManager.instance.get_pop_down(player_id):
+		print(true)
+	
 	var player_pointing_angle
 	if use_mouse:
 		var mouse_pos = get_viewport().get_mouse_position()
