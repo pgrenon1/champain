@@ -16,6 +16,24 @@ position = Vector2(264, 162)
 [node name="Spawn2" parent="spawn_positions" instance=ExtResource("1_7l3cp")]
 position = Vector2(264, 866)
 
+[node name="Spawn3" parent="spawn_positions" instance=ExtResource("1_7l3cp")]
+position = Vector2(1675, 192)
+
+[node name="Spawn4" parent="spawn_positions" instance=ExtResource("1_7l3cp")]
+position = Vector2(1700, 880)
+
+[node name="Spawn5" parent="spawn_positions" instance=ExtResource("1_7l3cp")]
+position = Vector2(271, 538)
+
+[node name="Spawn6" parent="spawn_positions" instance=ExtResource("1_7l3cp")]
+position = Vector2(920, 196)
+
+[node name="Spawn7" parent="spawn_positions" instance=ExtResource("1_7l3cp")]
+position = Vector2(1718, 563)
+
+[node name="Spawn8" parent="spawn_positions" instance=ExtResource("1_7l3cp")]
+position = Vector2(948, 894)
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="MainMenu" parent="CanvasLayer" instance=ExtResource("3_qjm6p")]
