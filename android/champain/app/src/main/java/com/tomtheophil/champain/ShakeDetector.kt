@@ -14,7 +14,7 @@ class ShakeDetector(
     private val accelerometer: Sensor
 ) : SensorEventListener {
     companion object {
-        const val DEFAULT_THRESHOLD = 35f
+        const val DEFAULT_THRESHOLD = 18f
         const val MIN_THRESHOLD = 0f
         const val MAX_THRESHOLD = 100f
         const val ALPHA = 0.8f
@@ -115,5 +115,23 @@ class ShakeDetector(
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         // Not needed for this implementation
+    }
+
+    fun debugTriggerShake() {
+        shakeCount.value += 1
+        recentShakeTimes.add(System.currentTimeMillis())
+        
+        // Update frequency based on recent shakes
+        if (recentShakeTimes.size >= MIN_SHAKES_FOR_FREQUENCY) {
+            val recentTime = recentShakeTimes.takeLast(MIN_SHAKES_FOR_FREQUENCY)
+            val timeDiff = recentTime.last() - recentTime.first()
+            if (timeDiff > 0) {
+                currentFrequency.floatValue = ((MIN_SHAKES_FOR_FREQUENCY - 1) * 1000f) / timeDiff
+            }
+        }
+        
+        // Clean up old timestamps
+        val currentTime = System.currentTimeMillis()
+        recentShakeTimes.removeAll { it < currentTime - FREQUENCY_WINDOW }
     }
 } 

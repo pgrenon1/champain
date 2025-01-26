@@ -1,5 +1,7 @@
 [versions]
 agp = "8.8.0"
+javaoscCore = "0.8"
+javaoscCoreVersion = "javaosc-0.4"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -12,6 +14,8 @@ socketio = "2.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+github-javaosc-core = { module = "com.github.hoijui.JavaOSC:javaosc-core", version.ref = "javaoscCoreVersion" }
+javaosc-core = { module = "com.illposed.osc:javaosc-core", version.ref = "javaoscCore" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

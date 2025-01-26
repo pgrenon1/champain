@@ -3,16 +3,21 @@ package com.tomtheophil.champain
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorManager
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.util.Log
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -23,27 +28,55 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DrawerDefaults
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -51,58 +84,66 @@ import com.tomtheophil.champain.ui.theme.ChampainTheme
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-object UIConstants {
-    const val MAX_FREQUENCY = 10f // Maximum expected movements per second
-}
-
 class MainActivity : ComponentActivity() {
-    private lateinit var shakeDetector: ShakeDetector
-    private lateinit var orientationDetector: OrientationDetector
-    private lateinit var connectionManager: ConnectionManager
+    private lateinit var sensors: SensorComponents
+    private lateinit var windowComponents: WindowComponents
+    private lateinit var haptics: HapticsManager
+    private var pressure = 0
 
-    @OptIn(ExperimentalFoundationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
-        val sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        val accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-        val rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
-        
-        if (accelerometer == null || rotationSensor == null) {
-            Log.e("MainActivity", "Required sensors not found on device")
-            return
-        }
+        setupComponents()
+        setupLifecycleObservers()
+        setupUI()
+    }
 
-        connectionManager = ConnectionManager()
-        shakeDetector = ShakeDetector(sensorManager, accelerometer)
-        orientationDetector = OrientationDetector(sensorManager, rotationSensor)
+    private fun setupComponents() {
+        windowComponents = WindowComponents(window)
+        sensors = SensorComponents(this)
+        haptics = HapticsManager(this)
+    }
 
-        // Watch for shakes and send to server
+    private fun setupLifecycleObservers() {
+        observeShakes()
+        observeOrientation()
+    }
+
+    private fun observeShakes() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                snapshotFlow { shakeDetector.shakeCount.intValue }
+                snapshotFlow { sensors.shakeDetector.shakeCount.intValue }
                     .collect { count ->
-                        if (connectionManager.isConnected() && count > 0) {
-                            // Send the current timestamp when a shake is detected
-                            connectionManager.sendShake(System.currentTimeMillis())
-                        }
+                        handleShake(count)
                     }
             }
         }
+    }
 
-        // Existing orientation flow collector
+    private fun handleShake(count: Int) {
+        if (sensors.connectionManager.isConnected() && count > 0) {
+            lifecycleScope.launch {
+                sensors.connectionManager.sendShake(System.currentTimeMillis())
+            }
+            pressure = (pressure + 1).coerceAtMost(Config.MAX_PRESSURE)
+            haptics.vibrate(pressure)
+        }
+    }
+
+    private fun observeOrientation() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 snapshotFlow {
-                    arrayOf(
-                        orientationDetector.calibratedX.floatValue,
-                        orientationDetector.calibratedY.floatValue,
-                        orientationDetector.calibratedZ.floatValue,
-                        orientationDetector.calibratedW.floatValue
-                    )
+                    with(sensors.orientationDetector) {
+                        arrayOf(
+                            calibratedX.floatValue,
+                            calibratedY.floatValue,
+                            calibratedZ.floatValue,
+                            calibratedW.floatValue
+                        )
+                    }
                 }.collect { quaternion ->
-                    if (connectionManager.isConnected()) {
-                        connectionManager.sendQuaternion(
+                    if (sensors.connectionManager.isConnected()) {
+                        sensors.connectionManager.sendQuaternion(
                             quaternion[0],
                             quaternion[1],
                             quaternion[2],
@@ -112,112 +153,113 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
 
+    private fun setupUI() {
         enableEdgeToEdge()
         setContent {
             ChampainTheme {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                        val pagerState = rememberPagerState { 4 }
-                        val scope = rememberCoroutineScope()
-                        
-                        Column(modifier = Modifier.padding(innerPadding)) {
-                            TabRow(
-                                selectedTabIndex = pagerState.currentPage
-                            ) {
-                                Tab(
-                                    selected = pagerState.currentPage == 0,
-                                    onClick = { scope.launch { pagerState.animateScrollToPage(0) } },
-                                    text = { 
-                                        Text(
-                                            "Game",
-                                            fontFamily = FontFamily.Monospace
-                                        ) 
-                                    }
-                                )
-                                Tab(
-                                    selected = pagerState.currentPage == 1,
-                                    onClick = { scope.launch { pagerState.animateScrollToPage(1) } },
-                                    text = { 
-                                        Text(
-                                            "Shake",
-                                            fontFamily = FontFamily.Monospace
-                                        ) 
-                                    }
-                                )
-                                Tab(
-                                    selected = pagerState.currentPage == 2,
-                                    onClick = { scope.launch { pagerState.animateScrollToPage(2) } },
-                                    text = { 
-                                        Text(
-                                            "Orientation",
-                                            fontFamily = FontFamily.Monospace
-                                        ) 
-                                    }
-                                )
-                                Tab(
-                                    selected = pagerState.currentPage == 3,
-                                    onClick = { scope.launch { pagerState.animateScrollToPage(3) } },
-                                    text = { 
-                                        Text(
-                                            "Connection",
-                                            fontFamily = FontFamily.Monospace
-                                        ) 
-                                    }
-                                )
-                            }
-
-                            HorizontalPager(
-                                state = pagerState,
-                                modifier = Modifier.fillMaxSize()
-                            ) { page ->
-                                when (page) {
-                                    0 -> GamePage()
-                                    1 -> ShakePage(
-                                        threshold = shakeDetector.shakeThreshold.floatValue,
-                                        onThresholdChange = { shakeDetector.shakeThreshold.floatValue = it },
-                                        accelY = shakeDetector.currentAccelY.floatValue,
-                                        shakeCount = shakeDetector.shakeCount.intValue,
-                                        frequency = shakeDetector.currentFrequency.floatValue,
-                                        isShaking = shakeDetector.isShakeDetected.value,
-                                        timestamps = shakeDetector.recentShakeTimes.toList()
-                                    )
-                                    2 -> OrientationPage(
-                                        x = orientationDetector.x.floatValue,
-                                        y = orientationDetector.y.floatValue,
-                                        z = orientationDetector.z.floatValue,
-                                        w = orientationDetector.w.floatValue,
-                                        calibratedX = orientationDetector.calibratedX.floatValue,
-                                        calibratedY = orientationDetector.calibratedY.floatValue,
-                                        calibratedZ = orientationDetector.calibratedZ.floatValue,
-                                        calibratedW = orientationDetector.calibratedW.floatValue,
-                                        isCalibrated = orientationDetector.isCalibrated.value,
-                                        onCalibrate = { orientationDetector.calibrate() },
-                                        onSpeedChange = { speed -> orientationDetector.setSpeed(speed) },
-                                        currentSpeed = orientationDetector.currentSpeed.value
-                                    )
-                                    3 -> ConnectionPage(
-                                        connectionManager = connectionManager
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
+                MainScreen(
+                    sensors = sensors,
+                    onPop = ::handlePop
+                )
             }
         }
     }
 
+    private fun handlePop() {
+        pressure = 0
+        haptics.cancel()
+    }
+
     override fun onResume() {
         super.onResume()
-        shakeDetector.startListening()
-        orientationDetector.startListening()
+        sensors.startListening()
     }
 
     override fun onPause() {
         super.onPause()
-        shakeDetector.stopListening()
-        orientationDetector.stopListening()
+        sensors.stopListening()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        windowComponents.cleanup()
+    }
+}
+
+/**
+ * Manages window-related components and settings
+ */
+private class WindowComponents(private val window: android.view.Window) {
+    private val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+
+    init {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    fun cleanup() {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        insetsController.show(WindowInsetsCompat.Type.systemBars())
+    }
+}
+
+/**
+ * Manages haptic feedback
+ */
+private class HapticsManager(context: Context) {
+    private val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+        vibratorManager.defaultVibrator
+    } else {
+        @Suppress("DEPRECATION")
+        context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    }
+
+    fun vibrate(pressure: Int) {
+        if (pressure > 0) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val effect = VibrationEffect.createOneShot(
+                    Config.VIBRATION_DURATION,
+                    (pressure * (Config.MAX_VIBRATION_AMPLITUDE / Config.MAX_PRESSURE)).toInt()
+                )
+                vibrator.vibrate(effect)
+            } else {
+                @Suppress("DEPRECATION")
+                vibrator.vibrate(Config.VIBRATION_DURATION)
+            }
+        }
+    }
+
+    fun cancel() {
+        vibrator.cancel()
+    }
+}
+
+@Composable
+private fun MainScreen(
+    sensors: SensorComponents,
+    onPop: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var selectedPage by remember { mutableStateOf(0) }
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+
+    NavigationDrawer(
+        drawerState = drawerState,
+        selectedPage = selectedPage,
+        onPageSelected = { selectedPage = it },
+        onCalibrate = { sensors.orientationDetector.calibrate() },
+        scope = scope
+    ) {
+        GameContent(
+            selectedPage = selectedPage,
+            sensors = sensors,
+            onPop = onPop,
+            modifier = modifier
+        )
     }
 }
 
@@ -234,13 +276,19 @@ fun ThresholdSlider(
         Text(
             text = "Shake Threshold: ±${String.format("%6.2f", threshold)}",
             style = MaterialTheme.typography.bodyMedium,
-            fontFamily = FontFamily.Monospace
+            fontFamily = FontFamily.Monospace,
+            color = UIConstants.UI_DARK  // Dark brown for better contrast
         )
         Slider(
             value = threshold,
             onValueChange = onThresholdChange,
             valueRange = ShakeDetector.MIN_THRESHOLD..ShakeDetector.MAX_THRESHOLD,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = SliderDefaults.colors(
+                thumbColor = UIConstants.UI_DARK,
+                activeTrackColor = UIConstants.UI_DARK,
+                inactiveTrackColor = Color(0x66442B00)
+            )
         )
     }
 }
@@ -322,6 +370,7 @@ fun GaugeBar(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
             fontFamily = FontFamily.Monospace,
+            color = UIConstants.UI_DARK,
             modifier = Modifier.padding(bottom = 4.dp)
         )
         Box(
@@ -329,14 +378,14 @@ fun GaugeBar(
                 .fillMaxWidth()
                 .height(24.dp)
                 .clip(RoundedCornerShape(12.dp))
-                .background(color.copy(alpha = 0.2f))
+                .background(UIConstants.UI_LIGHT.copy(alpha = 0.7f))
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
                     .fillMaxWidth(minOf(value / maxValue, 1f))
                     .clip(RoundedCornerShape(12.dp))
-                    .background(color)
+                    .background(UIConstants.UI_DARK)
             )
         }
     }
@@ -386,21 +435,29 @@ fun ShakePage(
     frequency: Float,
     isShaking: Boolean,
     timestamps: List<Long>,
+    onDebugShake: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier) {
-        ThresholdSlider(
-            threshold = threshold,
-            onThresholdChange = onThresholdChange
-        )
-        AccelerationDisplay(
-            accelY = accelY,
-            shakeCount = shakeCount,
-            frequency = frequency,
-            isShaking = isShaking,
-            timestamps = timestamps,
-            modifier = Modifier
-        )
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .clickable { onDebugShake() }  // Add click detection to the whole page
+    ) {
+        Column {
+            ThresholdSlider(
+                threshold = threshold,
+                onThresholdChange = onThresholdChange
+            )
+            
+            AccelerationDisplay(
+                accelY = accelY,
+                shakeCount = shakeCount,
+                frequency = frequency,
+                isShaking = isShaking,
+                timestamps = timestamps,
+                modifier = Modifier
+            )
+        }
     }
 }
 
@@ -424,57 +481,48 @@ fun OrientationPage(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        // Speed selector
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(
-                "Sensor Speed",
-                style = MaterialTheme.typography.titleMedium,
-                fontFamily = FontFamily.Monospace
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = spacedBy(4.dp)
-            ) {
-                OrientationDetector.SensorSpeed.values().forEach { speed ->
-                    FilledTonalButton(
-                        onClick = { onSpeedChange(speed) },
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(32.dp),
-                        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp),
-                        colors = ButtonDefaults.filledTonalButtonColors(
-                            containerColor = if (speed == currentSpeed) 
-                                MaterialTheme.colorScheme.primaryContainer 
-                            else 
-                                MaterialTheme.colorScheme.secondaryContainer
-                        )
-                    ) {
-                        Text(
-                            speed.label,
-                            style = MaterialTheme.typography.labelSmall,
-                            fontFamily = FontFamily.Monospace,
-                            maxLines = 1,
-                            color = if (speed == currentSpeed)
-                                MaterialTheme.colorScheme.onPrimaryContainer
-                            else
-                                MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                    }
-                }
-            }
-        }
-
         // Calibration button
         FilledTonalButton(
             onClick = onCalibrate,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.filledTonalButtonColors(
+                containerColor = UIConstants.UI_DARK,
+                contentColor = Color.White,
+                disabledContainerColor = UIConstants.UI_LIGHT
+            )
         ) {
             Text(
                 if (isCalibrated) "Recalibrate" else "Calibrate",
                 fontFamily = FontFamily.Monospace
             )
+        }
+
+        // Sensor speed buttons
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            OrientationDetector.SensorSpeed.values().forEach { speed ->
+                FilledTonalButton(
+                    onClick = { onSpeedChange(speed) },
+                    modifier = Modifier.weight(1f),
+                    contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                    colors = ButtonDefaults.filledTonalButtonColors(
+                        containerColor = if (speed == currentSpeed) UIConstants.UI_DARK else UIConstants.UI_MEDIUM,
+                        contentColor = Color.White,
+                        disabledContainerColor = UIConstants.UI_LIGHT
+                    )
+                ) {
+                    Text(
+                        speed.label,
+                        fontFamily = FontFamily.Monospace,
+                        style = MaterialTheme.typography.labelSmall,
+                        maxLines = 1
+                    )
+                }
+            }
         }
 
         // Raw sensor values
@@ -501,6 +549,56 @@ fun OrientationPage(
             Text("Y: ${String.format("%6.4f", calibratedY)}", style = MaterialTheme.typography.bodyMedium, fontFamily = FontFamily.Monospace)
             Text("Z: ${String.format("%6.4f", calibratedZ)}", style = MaterialTheme.typography.bodyMedium, fontFamily = FontFamily.Monospace)
             Text("W: ${String.format("%6.4f", calibratedW)}", style = MaterialTheme.typography.bodyMedium, fontFamily = FontFamily.Monospace)
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun SettingsPage(
+    shakeDetector: ShakeDetector,
+    orientationDetector: OrientationDetector,
+    connectionManager: ConnectionManager,
+    pagerState: PagerState,
+    modifier: Modifier = Modifier
+) {
+    HorizontalPager(
+        state = pagerState,
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) { page ->
+        when (page) {
+            0 -> ShakePage(
+                threshold = shakeDetector.shakeThreshold.floatValue,
+                onThresholdChange = { shakeDetector.shakeThreshold.floatValue = it },
+                accelY = shakeDetector.currentAccelY.floatValue,
+                shakeCount = shakeDetector.shakeCount.intValue,
+                frequency = shakeDetector.currentFrequency.floatValue,
+                isShaking = shakeDetector.isShakeDetected.value,
+                timestamps = shakeDetector.recentShakeTimes.toList(),
+                onDebugShake = { shakeDetector.debugTriggerShake() },
+                modifier = Modifier.fillMaxSize()
+            )
+            1 -> OrientationPage(
+                x = orientationDetector.x.floatValue,
+                y = orientationDetector.y.floatValue,
+                z = orientationDetector.z.floatValue,
+                w = orientationDetector.w.floatValue,
+                calibratedX = orientationDetector.calibratedX.floatValue,
+                calibratedY = orientationDetector.calibratedY.floatValue,
+                calibratedZ = orientationDetector.calibratedZ.floatValue,
+                calibratedW = orientationDetector.calibratedW.floatValue,
+                isCalibrated = orientationDetector.isCalibrated.value,
+                onCalibrate = { orientationDetector.calibrate() },
+                onSpeedChange = { orientationDetector.setSpeed(it) },
+                currentSpeed = orientationDetector.currentSpeed.value,
+                modifier = Modifier.fillMaxSize()
+            )
+            2 -> ConnectionPage(
+                connectionManager = connectionManager,
+                modifier = Modifier.fillMaxSize()
+            )
         }
     }
 }
