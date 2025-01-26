@@ -1,6 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://cj63dh7jasey1"]
+[gd_scene load_steps=4 format=3 uid="uid://cj63dh7jasey1"]
 
 [ext_resource type="Script" path="res://assets/scenes/ip_label.gd" id="1_1opap"]
+[ext_resource type="FontFile" uid="uid://sr25emn68gvy" path="res://assets/Quicksand-Regular.ttf" id="1_lpma1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_p7hko"]
+font = ExtResource("1_lpma1")
+font_size = 36
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
 
 [node name="ip_label" type="Control"]
 z_index = 1000
@@ -19,16 +26,14 @@ anchor_bottom = 0.046
 offset_right = -90.88
 offset_bottom = -9.68
 
-[node name="label_text_ip" type="RichTextLabel" parent="VBoxContainer"]
+[node name="label_text_ip" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 text = "IP: 1234123412341234"
-fit_content = true
-autowrap_mode = 0
+label_settings = SubResource("LabelSettings_p7hko")
 script = ExtResource("1_1opap")
 
-[node name="label_text_port" type="RichTextLabel" parent="VBoxContainer"]
+[node name="label_text_port" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 text = "Port: 4646"
-fit_content = true
-autowrap_mode = 0
+label_settings = SubResource("LabelSettings_p7hko")
 script = ExtResource("1_1opap")

@@ -1,6 +1,6 @@
 @tool
 
-extends Node2D
+class_name Bottle extends Node2D
 
 @export var max_shake_amount: float = 5.0  # Maximum shake offset
 @export var shake_speed: float = 20.0  # Speed of oscillation
@@ -12,6 +12,8 @@ extends Node2D
 var shake_amount = 0.0
 var initial_position: Vector2
 var time: float = 0.0
+
+var _shake_once_tween
 
 func _ready():
 	if 'player_id' in get_parent().get_parent():
@@ -30,13 +32,20 @@ func _process(delta):
 			
 			# Create shake offset using sin wave
 			var offset_x = sin(time * 2.0) * shake_amount
-			var offset_y = sin(time * 2.5) * shake_amount  # Slightly different frequency for y
+			#var offset_y = sin(time * 2.5) * shake_amount  # Slightly different frequency for y
 			
 			# Apply shake
-			position = initial_position + Vector2(offset_x, offset_y)
+			position.x = initial_position.x + offset_x
 		else:
-			position = initial_position
+			position.x = initial_position.x
 			time = 0.0
+			
+func shake_once():
+	position = initial_position
+	if _shake_once_tween: _shake_once_tween.kill()
+	_shake_once_tween = get_tree().create_tween()
+	_shake_once_tween.tween_property(self, "position", initial_position + Vector2.UP * 200, 0.1)
+	_shake_once_tween.tween_property(self, "position", position, 0.1)
 
 # Call this to start shaking
 func start_shake():
