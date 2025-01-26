@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://r363kwfebbi" path="res://assets/scenes/spawn.tscn" id="1_7l3cp"]
 [ext_resource type="Script" path="res://assets/scripts/lobby.gd" id="1_68fj7"]
-[ext_resource type="PackedScene" path="res://assets/scenes/main_menu.tscn" id="3_qjm6p"]
+[ext_resource type="PackedScene" uid="uid://bqosmevo3khjs" path="res://assets/scenes/main_menu.tscn" id="3_qjm6p"]
 [ext_resource type="PackedScene" uid="uid://bhcrpvvrss881" path="res://assets/scenes/rectangle_wall.tscn" id="4_102j6"]
 
 [node name="Lobby" type="Node2D"]
