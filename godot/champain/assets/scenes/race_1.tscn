@@ -1,13 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://mhd0taubfps2"]
+[gd_scene load_steps=5 format=3 uid="uid://mhd0taubfps2"]
 
 [ext_resource type="PackedScene" uid="uid://b1qu7gq1j4y0u" path="res://assets/scenes/player.tscn" id="1_6nthd"]
 [ext_resource type="PackedScene" uid="uid://bhcrpvvrss881" path="res://assets/scenes/rectangle_wall.tscn" id="2_1eklx"]
+[ext_resource type="Texture2D" uid="uid://vtlesceds08y" path="res://assets/graphics/ray.png" id="2_g5hhv"]
+[ext_resource type="PackedScene" uid="uid://dvgxpenu61vuv" path="res://assets/scenes/controllers.tscn" id="3_5xpd2"]
 
 [node name="Race1" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_6nthd")]
 position = Vector2(281, 186)
-player_id = 1
+
+[node name="debug" type="Sprite2D" parent="Player"]
+texture = ExtResource("2_g5hhv")
+offset = Vector2(50, 0)
 
 [node name="RectangleWall" parent="." instance=ExtResource("2_1eklx")]
 position = Vector2(527, 534)
@@ -15,3 +20,10 @@ scale = Vector2(4.12, 0.56)
 
 [node name="Player2" parent="." instance=ExtResource("1_6nthd")]
 position = Vector2(514, 184)
+player_id = 1
+
+[node name="debug" type="Sprite2D" parent="Player2"]
+texture = ExtResource("2_g5hhv")
+offset = Vector2(50, 0)
+
+[node name="Controllers" parent="." instance=ExtResource("3_5xpd2")]
