@@ -16,8 +16,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.pager.rememberPagerState
 
 /**
  * Main game screen that displays bubbles and handles interactions
@@ -33,9 +31,7 @@ fun Game(
     var bubbleView by remember { mutableStateOf<BubbleView?>(null) }
     
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(createChampagneGradient())
+        modifier = modifier.fillMaxSize()
     ) {
         // Create and manage BubbleView lifecycle
         AndroidView(
@@ -93,31 +89,3 @@ private fun createChampagneGradient() = Brush.verticalGradient(
         UIConstants.CHAMPAGNE_DARK
     )
 )
-
-/**
- * Main content container for the game screen
- */
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun GameContent(
-    selectedPage: Int,
-    sensors: SensorComponents,
-    onPop: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    when (selectedPage) {
-        0 -> Game(
-            frequency = sensors.shakeDetector.currentFrequency.floatValue,
-            connectionManager = sensors.connectionManager,
-            onPop = onPop,
-            modifier = modifier
-        )
-        1 -> SettingsPage(
-            shakeDetector = sensors.shakeDetector,
-            orientationDetector = sensors.orientationDetector,
-            connectionManager = sensors.connectionManager,
-            pagerState = rememberPagerState(pageCount = { 3 }),
-            modifier = modifier
-        )
-    }
-} 
