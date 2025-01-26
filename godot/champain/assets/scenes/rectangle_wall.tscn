@@ -10,7 +10,6 @@ size = Vector2(128, 128)
 
 [node name="RectangleWall" type="StaticBody2D"]
 position = Vector2(533, 383)
-scale = Vector2(4, 1)
 physics_material_override = SubResource("PhysicsMaterial_pa6ve")
 metadata/_edit_group_ = true
 

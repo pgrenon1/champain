@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://0uvlnkkx62ml"]
+
+[ext_resource type="Script" path="res://assets/scripts/race_finish.gd" id="1_gxdtp"]
+[ext_resource type="Texture2D" uid="uid://bb10gfp5h3kqk" path="res://assets/graphics/square.png" id="1_v3inh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cngur"]
+size = Vector2(128, 128)
+
+[node name="RaceFinish" type="Area2D"]
+script = ExtResource("1_gxdtp")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 0, 0, 0.686275)
+texture = ExtResource("1_v3inh")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_cngur")
