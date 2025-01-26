@@ -20,12 +20,12 @@ config/icon="res://icon.svg"
 Global="*res://assets/scripts/global.gd"
 Controllers="*res://assets/scripts/where_controllers_live.gd"
 SpawnManager="*res://assets/scenes/levels/spawn_manager.gd"
+MusicAutoload="*res://assets/scripts/music_autoload.gd"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/mode=3
 window/stretch/mode="viewport"
 window/stretch/aspect="ignore"
 

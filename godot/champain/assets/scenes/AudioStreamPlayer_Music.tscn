@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cmoyf4t1tevmh"]
+[gd_scene load_steps=2 format=3 uid="uid://bbohsi34kfe4w"]
 
 [ext_resource type="AudioStream" uid="uid://cqaywt2ur5aty" path="res://assets/sounds/Disco Century.wav" id="1_oa537"]
 
 [node name="AudioStreamPlayerMusic" type="AudioStreamPlayer"]
 stream = ExtResource("1_oa537")
+autoplay = true
