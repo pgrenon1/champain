@@ -1,13 +1,10 @@
 class_name Player extends RigidBody2D
 
 @export var debug = false
-@export var speed = 400
+
 @export var spray_shake_max_count = 20
-@export var spray_min_impulse = 0
 @export var spray_max_impulse = 700
-@export var spray_min_force = 0
 @export var spray_max_force = 100
-@export var spray_min_duration = 0.0
 @export var spray_max_duration = 3.0
 
 @export var player_id = 0
@@ -91,9 +88,9 @@ func _start_spraying(direction: Vector2):
 	_is_spraying = true
 	var pop_power = _shake_count/float(spray_shake_max_count)
 	_label.text = "POP!"
-	var impulse = lerp(spray_min_impulse, spray_max_impulse, pop_power)
-	_spray_force = lerp(spray_min_force, spray_max_force, pop_power)
-	_spray_timer = lerp(spray_min_duration, spray_max_duration, pop_power)
+	var impulse = lerp(0, spray_max_impulse, pop_power)
+	_spray_force = lerp(0, spray_max_force, pop_power)
+	_spray_timer = lerp(0.0, spray_max_duration, pop_power)
 	apply_impulse(direction * impulse)
 	_shake_count = 0
 	sync_bottle_shake()

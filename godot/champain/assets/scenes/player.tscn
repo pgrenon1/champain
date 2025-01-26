@@ -30,16 +30,16 @@ lock_rotation = true
 linear_damp = 1.5
 script = ExtResource("1_h6qqu")
 debug = true
-speed = 700
-spray_shake_max_count = 15
-spray_max_impulse = 1200
-spray_max_force = 2000
+spray_shake_max_count = 12
+spray_max_impulse = 400
+spray_max_force = 800
+spray_max_duration = 2.5
 _sprite = NodePath("Sprite2D")
 _label = NodePath("Label")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -5.97844)
+position = Vector2(0, -7.26711)
 scale = Vector2(0.65, 0.65)
 texture = ExtResource("2_41de8")
 script = ExtResource("2_wabwe")
