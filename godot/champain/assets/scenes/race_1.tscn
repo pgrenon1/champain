@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://mhd0taubfps2"]
+[gd_scene load_steps=6 format=3 uid="uid://mhd0taubfps2"]
 
 [ext_resource type="PackedScene" uid="uid://b1qu7gq1j4y0u" path="res://assets/scenes/player.tscn" id="1_6nthd"]
 [ext_resource type="PackedScene" uid="uid://bhcrpvvrss881" path="res://assets/scenes/rectangle_wall.tscn" id="2_1eklx"]
-[ext_resource type="Texture2D" uid="uid://vtlesceds08y" path="res://assets/graphics/ray.png" id="2_g5hhv"]
 [ext_resource type="PackedScene" uid="uid://0uvlnkkx62ml" path="res://assets/scenes/race_finish.tscn" id="3_4u852"]
 [ext_resource type="PackedScene" uid="uid://dvgxpenu61vuv" path="res://assets/scenes/controllers.tscn" id="3_5xpd2"]
 [ext_resource type="PackedScene" uid="uid://boyg2fihjlwv0" path="res://assets/scenes/race_checkpoint.tscn" id="3_xvbif"]
@@ -25,25 +24,13 @@ scale = Vector2(0.32, 1.56)
 position = Vector2(34, 480)
 use_mouse = true
 
-[node name="debug" type="Sprite2D" parent="Player"]
-texture = ExtResource("2_g5hhv")
-offset = Vector2(50, 0)
-
 [node name="Player2" parent="." instance=ExtResource("1_6nthd")]
 position = Vector2(93, 467)
 player_id = 1
 
-[node name="debug" type="Sprite2D" parent="Player2"]
-texture = ExtResource("2_g5hhv")
-offset = Vector2(50, 0)
-
 [node name="Player3" parent="." instance=ExtResource("1_6nthd")]
 position = Vector2(154, 452)
 player_id = 2
-
-[node name="debug" type="Sprite2D" parent="Player3"]
-texture = ExtResource("2_g5hhv")
-offset = Vector2(50, 0)
 
 [node name="RectangleWall" parent="." instance=ExtResource("2_1eklx")]
 position = Vector2(-44, 340)
