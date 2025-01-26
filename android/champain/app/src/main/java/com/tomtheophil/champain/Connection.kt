@@ -24,12 +24,16 @@ class ConnectionManager(context: Context) {
     companion object {
         private const val TAG = "ConnectionManager"
         private const val PREFS_NAME = "ConnectionPrefs"
+        private const val DEFAULT_IP = "192.168.0."
+        private const val DEFAULT_PORT = "4646"
     }
 
     private object PrefsKeys {
         const val LAST_IP = "lastIpAddress"
         const val LAST_PORT = "lastPort"
         const val DEVICE_ID = "deviceId"
+        const val LAST_ENTERED_IP = "lastEnteredIp"
+        const val LAST_ENTERED_PORT = "lastEnteredPort"
     }
 
     private var oscPort: OSCPortOut? = null
@@ -52,6 +56,10 @@ class ConnectionManager(context: Context) {
     fun getDeviceId(): String = deviceId
     fun getLastIpAddress(): String? = prefs.getString(PrefsKeys.LAST_IP, null)
     fun getLastPort(): String? = prefs.getString(PrefsKeys.LAST_PORT, null)
+    fun getLastEnteredIpAddress(): String? = 
+        prefs.getString(PrefsKeys.LAST_ENTERED_IP, DEFAULT_IP)
+    fun getLastEnteredPort(): String? = 
+        prefs.getString(PrefsKeys.LAST_ENTERED_PORT, DEFAULT_PORT)
 
     private fun attemptReconnection() {
         val lastIp = getLastIpAddress()
@@ -74,6 +82,7 @@ class ConnectionManager(context: Context) {
             connected = true
             
             saveConnectionDetails(ipAddress, port)
+            saveLastEnteredDetails(ipAddress, port.toString())
             return true
         } catch (e: Exception) {
             Log.e(TAG, "Error connecting to server", e)
@@ -86,6 +95,13 @@ class ConnectionManager(context: Context) {
         prefs.edit()
             .putString(PrefsKeys.LAST_IP, ipAddress)
             .putString(PrefsKeys.LAST_PORT, port.toString())
+            .apply()
+    }
+
+    private fun saveLastEnteredDetails(ipAddress: String, port: String) {
+        prefs.edit()
+            .putString(PrefsKeys.LAST_ENTERED_IP, ipAddress)
+            .putString(PrefsKeys.LAST_ENTERED_PORT, port)
             .apply()
     }
 
