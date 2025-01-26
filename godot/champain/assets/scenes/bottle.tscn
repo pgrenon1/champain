@@ -1,9 +1,11 @@
-[gd_scene load_steps=20 format=3 uid="uid://ctc6ecnsm5i25"]
+[gd_scene load_steps=22 format=3 uid="uid://ctc6ecnsm5i25"]
 
 [ext_resource type="Script" path="res://assets/scripts/shake.gd" id="1_i2noj"]
 [ext_resource type="Texture2D" uid="uid://b3in88mww8ve6" path="res://assets/graphics/bottle/single_bulle.png" id="2_wi00y"]
 [ext_resource type="Script" path="res://assets/scripts/reactiveparticles.gd" id="3_b7tm7"]
+[ext_resource type="Texture2D" uid="uid://loplhh84nmpg" path="res://assets/graphics/bottle/cork.png" id="4_7opy1"]
 [ext_resource type="Texture2D" uid="uid://s05bwdtkitvh" path="res://assets/graphics/bottle/bottle_transparent.png" id="4_krp2l"]
+[ext_resource type="Script" path="res://assets/scripts/cork_fly.gd" id="5_pnyam"]
 [ext_resource type="Texture2D" uid="uid://ow1f54s0c674" path="res://assets/graphics/bottle/bottle_hand.png" id="5_vrpkg"]
 [ext_resource type="Texture2D" uid="uid://dxjgokdiwhh5u" path="res://assets/graphics/bottle/bottle_mask.png" id="6_kwvui"]
 [ext_resource type="Texture2D" uid="uid://d38fk6xst73if" path="res://assets/graphics/bottle/gradient.png" id="7_ce76l"]
@@ -69,6 +71,13 @@ process_material = SubResource("ParticleProcessMaterial_j456o")
 texture = ExtResource("2_wi00y")
 preprocess = 1.0
 script = ExtResource("3_b7tm7")
+
+[node name="cork" type="Sprite2D" parent="."]
+position = Vector2(-16.36, -59.96)
+scale = Vector2(2.8, 2.8)
+texture = ExtResource("4_7opy1")
+script = ExtResource("5_pnyam")
+launch_speed = 20.0
 
 [node name="transparent_bottle" type="Sprite2D" parent="."]
 position = Vector2(-16.36, -59.96)

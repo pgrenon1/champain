@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://0uvlnkkx62ml" path="res://assets/scenes/race_finish.tscn" id="1_u32ff"]
 [ext_resource type="PackedScene" uid="uid://boyg2fihjlwv0" path="res://assets/scenes/race_checkpoint.tscn" id="2_bmqk6"]
-[ext_resource type="PackedScene" path="res://assets/scenes/bouncy_wall.tscn" id="4_pfkx0"]
+[ext_resource type="PackedScene" uid="uid://djm4pxyo2siii" path="res://assets/scenes/bouncy_wall.tscn" id="4_pfkx0"]
 [ext_resource type="PackedScene" uid="uid://r363kwfebbi" path="res://assets/scenes/spawn.tscn" id="5_vpj2r"]
 [ext_resource type="PackedScene" uid="uid://bhcrpvvrss881" path="res://assets/scenes/rectangle_wall.tscn" id="5_wwgn7"]
 [ext_resource type="FontFile" uid="uid://b8irqbncrt45c" path="res://assets/Quicksand-Bold.ttf" id="6_k2ybq"]
@@ -120,3 +120,7 @@ text = "PLAYER x WINS!"
 label_settings = SubResource("LabelSettings_4lx5r")
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+position = Vector2(905, 501)
+current = true

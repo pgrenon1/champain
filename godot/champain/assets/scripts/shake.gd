@@ -15,7 +15,10 @@ var time: float = 0.0
 
 var _shake_once_tween
 
+var cork = null
+
 func _ready():
+	cork = $cork
 	if 'player_id' in get_parent().get_parent():
 		var mask_layer = get_parent().get_parent().player_id + 1
 		$mask.range_item_cull_mask = (1 << mask_layer)
@@ -71,4 +74,9 @@ func set_spray_ratio(ratio: float):
 	$spray.set_amount_ratio(ratio)
 	
 func toggle_spray(value: bool):
+	if value:
+		cork.launch()
+	else:
+		cork.reset()
+		
 	$spray.toggle_particles(value)
