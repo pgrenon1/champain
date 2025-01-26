@@ -1,12 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://dwndwq4yhbf0x"]
+[gd_scene load_steps=11 format=3 uid="uid://dk3xg70mar83t"]
 
 [ext_resource type="PackedScene" uid="uid://bhcrpvvrss881" path="res://assets/scenes/rectangle_wall.tscn" id="1_k8tx2"]
-[ext_resource type="PackedScene" uid="uid://nemyswgvobc8" path="res://assets/scenes/ball.tscn" id="2_hj2h3"]
+[ext_resource type="PackedScene" path="res://assets/scenes/ball.tscn" id="2_hj2h3"]
 [ext_resource type="FontFile" uid="uid://b8irqbncrt45c" path="res://assets/Quicksand-Bold.ttf" id="4_qa7mq"]
 [ext_resource type="FontFile" uid="uid://sr25emn68gvy" path="res://assets/Quicksand-Regular.ttf" id="5_c8ssn"]
 [ext_resource type="PackedScene" uid="uid://r363kwfebbi" path="res://assets/scenes/spawn.tscn" id="6_k8mo5"]
 [ext_resource type="Script" path="res://assets/scripts/soccer_gamemode.gd" id="7_kkrwa"]
-[ext_resource type="PackedScene" uid="uid://ryrscuan21ce" path="res://assets/scenes/goal.tscn" id="8_xr3rv"]
+[ext_resource type="PackedScene" path="res://assets/scenes/goal.tscn" id="8_xr3rv"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_7b7lr"]
 font = ExtResource("4_qa7mq")
@@ -29,13 +29,15 @@ outline_color = Color(0, 0, 0, 1)
 [node name="Soccer1" type="Node2D"]
 position = Vector2(56, 30)
 
-[node name="SoccerGamemode" type="Node" parent="." node_paths=PackedStringArray("_ball", "_ball_spawn", "_score", "_timer", "_announcer")]
+[node name="SoccerGamemode" type="Node" parent="." node_paths=PackedStringArray("_ball", "_ball_spawn", "_score_left", "_score_right", "_timer", "_announcer")]
 script = ExtResource("7_kkrwa")
+game_duration = 30.0
 _ball = NodePath("Ball")
 _ball_spawn = NodePath("BallSpawnPosition")
-_score = NodePath("UI/Score")
-_timer = NodePath("UI/Timer")
-_announcer = NodePath("UI/Announcer")
+_score_left = NodePath("../CanvasLayer/UI/HBoxContainer/ScoreLeft")
+_score_right = NodePath("../CanvasLayer/UI/HBoxContainer/ScoreRight")
+_timer = NodePath("../CanvasLayer/UI/HBoxContainer/Timer")
+_announcer = NodePath("../CanvasLayer/UI/CenterContainer/Announcer")
 
 [node name="Goal1" parent="SoccerGamemode" instance=ExtResource("8_xr3rv")]
 z_index = -1
@@ -53,43 +55,6 @@ position = Vector2(928, 544)
 
 [node name="Ball" parent="SoccerGamemode" instance=ExtResource("2_hj2h3")]
 position = Vector2(928, 544)
-
-[node name="UI" type="Control" parent="SoccerGamemode"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Score" type="Label" parent="SoccerGamemode/UI"]
-custom_minimum_size = Vector2(600, 0)
-layout_mode = 0
-offset_left = 632.0
-offset_top = 24.0
-offset_right = 1232.0
-offset_bottom = 199.0
-text = "0            0"
-label_settings = SubResource("LabelSettings_7b7lr")
-horizontal_alignment = 1
-
-[node name="Timer" type="Label" parent="SoccerGamemode/UI"]
-layout_mode = 0
-offset_left = 864.0
-offset_top = 48.0
-offset_right = 1118.0
-offset_bottom = 223.0
-text = "3:00"
-label_settings = SubResource("LabelSettings_g61bn")
-
-[node name="Announcer" type="Label" parent="SoccerGamemode/UI"]
-custom_minimum_size = Vector2(900, 0)
-layout_mode = 0
-offset_left = 480.0
-offset_top = 440.0
-offset_right = 1380.0
-offset_bottom = 615.0
-text = "GOAL!!"
-label_settings = SubResource("LabelSettings_y0jem")
-horizontal_alignment = 1
 
 [node name="RectangleWall" parent="." instance=ExtResource("1_k8tx2")]
 position = Vector2(912, 1090)
@@ -148,3 +113,60 @@ position = Vector2(264, 738)
 
 [node name="Spawn8" parent="SpawnPositions" instance=ExtResource("6_k8mo5")]
 position = Vector2(1544, 290)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.06
+anchor_right = 1.0
+anchor_bottom = 0.135
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ScoreLeft" type="Label" parent="CanvasLayer/UI/HBoxContainer"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+text = "0"
+label_settings = SubResource("LabelSettings_7b7lr")
+horizontal_alignment = 1
+
+[node name="Timer" type="Label" parent="CanvasLayer/UI/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "3:00"
+label_settings = SubResource("LabelSettings_g61bn")
+horizontal_alignment = 1
+
+[node name="ScoreRight" type="Label" parent="CanvasLayer/UI/HBoxContainer"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0
+"
+label_settings = SubResource("LabelSettings_7b7lr")
+horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Announcer" type="Label" parent="CanvasLayer/UI/CenterContainer"]
+layout_mode = 2
+text = "GOAL!!"
+label_settings = SubResource("LabelSettings_y0jem")
+horizontal_alignment = 1

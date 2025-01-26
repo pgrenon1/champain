@@ -111,4 +111,3 @@ func validate_lap():
 	_sprite.scale = _original_scale * 2
 	var tween = get_tree().create_tween()
 	tween.tween_property(_sprite, "scale", _original_scale, 0.2)
-	print("player " + str(player_id) + " finishes lap " + str(lap_count))
