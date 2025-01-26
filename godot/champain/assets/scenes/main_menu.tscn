@@ -56,8 +56,5 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 72
 text = "Race"
 
-[node name="AudioListener2D" type="AudioListener2D" parent="."]
-position = Vector2(945, 505)
-
 [connection signal="button_down" from="MarginContainer/VBoxContainer/MarginContainer/Soccer" to="." method="_on_soccer_button_down"]
 [connection signal="button_down" from="MarginContainer/VBoxContainer/MarginContainer2/Race" to="." method="_on_race_button_down"]
