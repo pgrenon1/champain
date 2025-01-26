@@ -14,10 +14,10 @@ friction = 0.0
 bounce = 0.5
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7ghod"]
-radius = 253.18
+radius = 43.1045
 
 [sub_resource type="LabelSettings" id="LabelSettings_oip06"]
-font_size = 56
+font_size = 120
 outline_size = 11
 outline_color = Color(0, 0, 0, 1)
 
@@ -28,26 +28,29 @@ can_sleep = false
 lock_rotation = true
 linear_damp = 1.5
 script = ExtResource("1_h6qqu")
+debug = true
 speed = 700
-spray_max_impulse = 400
-spray_max_force = 1200
-spray_max_duration = 1.5
+spray_shake_max_count = 15
+spray_max_impulse = 1200
+spray_max_force = 2000
 _sprite = NodePath("Sprite2D")
 _label = NodePath("Label")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -16.2)
-scale = Vector2(0.345, 0.345)
+scale = Vector2(0.65, 0.65)
 texture = ExtResource("4_cmnmq")
 script = ExtResource("2_wabwe")
+float_amplitude = 4.0
 sprites = Array[Texture2D]([ExtResource("4_cmnmq"), ExtResource("5_7cqra"), ExtResource("2_41de8"), ExtResource("6_pg1nv"), ExtResource("7_ppmdj")])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(0.1, 0.1)
+position = Vector2(0, 9)
 shape = SubResource("CircleShape2D_7ghod")
 
 [node name="debug" type="Sprite2D" parent="."]
+scale = Vector2(1, 3.88)
 texture = ExtResource("8_0givg")
 offset = Vector2(50, 0)
 
@@ -55,8 +58,9 @@ offset = Vector2(50, 0)
 offset_left = -7.0
 offset_top = -4.0
 offset_right = 33.0
-offset_bottom = 73.0
+offset_bottom = 161.0
 scale = Vector2(0.341535, 0.341535)
+text = "1"
 label_settings = SubResource("LabelSettings_oip06")
 horizontal_alignment = 1
 autowrap_mode = 2

@@ -27,7 +27,7 @@ var player_controller
 func _ready() -> void:
 	_original_scale = _sprite.scale
 	_label.text = str(_shake_count)
-	pass
+	
 	
 func _process(delta: float) -> void:
 	$debug.visible = self.debug
@@ -78,6 +78,8 @@ func _shake():
 	if _shake_count < spray_shake_max_count:
 		_shake_count += 1
 		_label.text = str(_shake_count)
+	else:
+		_label.text = "MAX"
 
 func _start_spraying(direction: Vector2):
 	_is_spraying = true
