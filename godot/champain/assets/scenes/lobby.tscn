@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dibh127hh8np0"]
+[gd_scene load_steps=5 format=3 uid="uid://wnq64i8shcs1"]
 
 [ext_resource type="PackedScene" uid="uid://r363kwfebbi" path="res://assets/scenes/spawn.tscn" id="1_7l3cp"]
 [ext_resource type="Script" path="res://assets/scripts/lobby.gd" id="1_68fj7"]
-[ext_resource type="PackedScene" uid="uid://bqosmevo3khjs" path="res://assets/scenes/main_menu.tscn" id="3_qjm6p"]
+[ext_resource type="PackedScene" path="res://assets/scenes/main_menu.tscn" id="3_qjm6p"]
+[ext_resource type="PackedScene" uid="uid://bhcrpvvrss881" path="res://assets/scenes/rectangle_wall.tscn" id="4_102j6"]
 
 [node name="Lobby" type="Node2D"]
 script = ExtResource("1_68fj7")
@@ -41,3 +42,19 @@ position = Vector2(948, 894)
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
 position = Vector2(964, 532)
 current = true
+
+[node name="RectangleWall" parent="." instance=ExtResource("4_102j6")]
+position = Vector2(-64, 536)
+scale = Vector2(1, 11.08)
+
+[node name="RectangleWall2" parent="." instance=ExtResource("4_102j6")]
+position = Vector2(1984, 536)
+scale = Vector2(1, 11.08)
+
+[node name="RectangleWall3" parent="." instance=ExtResource("4_102j6")]
+position = Vector2(928, 1152)
+scale = Vector2(16.4, 1)
+
+[node name="RectangleWall4" parent="." instance=ExtResource("4_102j6")]
+position = Vector2(936, -64)
+scale = Vector2(16.4, 1)
