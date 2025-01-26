@@ -64,6 +64,7 @@ material = SubResource("CanvasItemMaterial_qckau")
 position = Vector2(-17.3926, 56.8814)
 scale = Vector2(1.2, 1)
 amount = 500
+amount_ratio = 0.0
 process_material = SubResource("ParticleProcessMaterial_j456o")
 texture = ExtResource("2_wi00y")
 preprocess = 1.0

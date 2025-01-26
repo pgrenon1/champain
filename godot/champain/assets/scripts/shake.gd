@@ -19,6 +19,7 @@ func _ready():
 		$mask.range_item_cull_mask = (1 << mask_layer)
 		$particles.light_mask = (1 << mask_layer)
 	initial_position = position
+	set_shake_value(0)
 
 func _process(delta):
 	if Engine.is_editor_hint():
