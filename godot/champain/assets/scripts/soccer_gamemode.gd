@@ -32,6 +32,7 @@ func goal_scored(team_id: int):
 	_ball.set_linear_velocity(Vector2())
 	_ball.set_angular_velocity(0.0)
 	_ball.global_translate(_ball_spawn.global_position - _ball.global_position)
+	SpawnManager.instance.respawn_all()
 
 func _update_game_timer(delta: float):
 	_game_timer -= delta

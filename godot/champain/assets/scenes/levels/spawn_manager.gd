@@ -3,6 +3,8 @@ extends Node
 @export var player_count = 2
 @export var player_scene: PackedScene
 
+static var instance: SpawnManager = null
+
 var _spawn_positions : Array[Vector2] = []
 
 var spawn_positions : Array[Vector2]:
@@ -16,6 +18,9 @@ var players: Array[Player] = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if instance == null:
+		instance = self
+		
 	_get_spawn_positions()
 	ControllerManager.instance.player_added.connect(player_added)
 	Global.scene_loaded.connect(on_scene_loaded)
