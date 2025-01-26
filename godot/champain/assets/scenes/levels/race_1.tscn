@@ -76,12 +76,31 @@ position = Vector2(562, -35.0001)
 scale = Vector2(10.64, 0.56)
 
 [node name="SpawnPositions" type="Node2D" parent="Parcours" groups=["spawn_positions"]]
+position = Vector2(-40, -16)
 
 [node name="Spawn" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
-position = Vector2(37, 461)
+position = Vector2(54.7436, 478.18)
 
 [node name="Spawn2" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
-position = Vector2(143, 461)
+position = Vector2(75.2564, 477.538)
+
+[node name="Spawn3" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
+position = Vector2(96.4102, 477.538)
+
+[node name="Spawn4" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
+position = Vector2(116.923, 478.18)
+
+[node name="Spawn5" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
+position = Vector2(139.359, 478.18)
+
+[node name="Spawn6" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
+position = Vector2(157.949, 478.821)
+
+[node name="Spawn7" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
+position = Vector2(175.897, 478.821)
+
+[node name="Spawn8" parent="Parcours/SpawnPositions" instance=ExtResource("5_vpj2r")]
+position = Vector2(197.692, 475.615)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
