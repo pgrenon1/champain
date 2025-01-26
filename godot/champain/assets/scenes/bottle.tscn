@@ -1,0 +1,116 @@
+[gd_scene load_steps=19 format=3 uid="uid://ctc6ecnsm5i25"]
+
+[ext_resource type="Script" path="res://assets/scripts/shake.gd" id="1_i2noj"]
+[ext_resource type="Texture2D" uid="uid://b3in88mww8ve6" path="res://assets/graphics/bottle/single_bulle.png" id="2_wi00y"]
+[ext_resource type="Script" path="res://assets/scripts/reactiveparticles.gd" id="3_b7tm7"]
+[ext_resource type="Texture2D" uid="uid://s05bwdtkitvh" path="res://assets/graphics/bottle/bottle_transparent.png" id="4_krp2l"]
+[ext_resource type="Texture2D" uid="uid://ow1f54s0c674" path="res://assets/graphics/bottle/bottle_hand.png" id="5_vrpkg"]
+[ext_resource type="Texture2D" uid="uid://dxjgokdiwhh5u" path="res://assets/graphics/bottle/bottle_mask.png" id="6_kwvui"]
+[ext_resource type="Texture2D" uid="uid://d38fk6xst73if" path="res://assets/graphics/bottle/gradient.png" id="7_ce76l"]
+[ext_resource type="Shader" path="res://assets/shaders/mask.gdshader" id="7_qhta3"]
+[ext_resource type="Texture2D" uid="uid://bp33puh7o6xqp" path="res://assets/graphics/bottle/bottle_mask2.png" id="8_njoj0"]
+[ext_resource type="Script" path="res://assets/scripts/mask.gd" id="8_uytr1"]
+
+[sub_resource type="Curve" id="Curve_tysf0"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.42572, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_qckau"]
+blend_mode = 1
+
+[sub_resource type="Curve" id="Curve_dajyd"]
+min_value = -360.0
+max_value = 360.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 85.0781), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="3"]
+curve = SubResource("Curve_dajyd")
+
+[sub_resource type="Curve" id="Curve_2kts4"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.11, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="5"]
+curve = SubResource("Curve_2kts4")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_j456o"]
+emission_shape_scale = Vector3(49.48, 76.11, 14.12)
+emission_shape = 3
+emission_box_extents = Vector3(1, 1, 1)
+angular_velocity_curve = SubResource("3")
+gravity = Vector3(0, -250, 0)
+scale_min = 0.5
+scale_max = 0.5
+scale_curve = SubResource("5")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o6h0p"]
+shader = ExtResource("7_qhta3")
+shader_parameter/mask_texture = ExtResource("8_njoj0")
+
+[node name="bottle" type="Node2D"]
+position = Vector2(222, 404)
+rotation = -0.00689539
+script = ExtResource("1_i2noj")
+max_shake_amount = 25.0
+is_shaking = true
+curve = SubResource("Curve_tysf0")
+scale_fix = 0.5
+
+[node name="particles" type="GPUParticles2D" parent="." groups=["trailable_particles"]]
+light_mask = 2
+texture_filter = 4
+material = SubResource("CanvasItemMaterial_qckau")
+position = Vector2(-0.360016, -0.960022)
+amount = 500
+process_material = SubResource("ParticleProcessMaterial_j456o")
+texture = ExtResource("2_wi00y")
+preprocess = 1.0
+script = ExtResource("3_b7tm7")
+
+[node name="transparent_bottle" type="Sprite2D" parent="."]
+position = Vector2(-16.36, -59.96)
+scale = Vector2(2.8, 2.8)
+texture = ExtResource("4_krp2l")
+
+[node name="hand" type="Sprite2D" parent="."]
+position = Vector2(-16.36, -59.96)
+scale = Vector2(2.8, 2.8)
+texture = ExtResource("5_vrpkg")
+
+[node name="mask" type="PointLight2D" parent="."]
+position = Vector2(-4.36002, -76.96)
+blend_mode = 1
+range_item_cull_mask = 2
+texture = ExtResource("6_kwvui")
+texture_scale = 4.07
+
+[node name="gradient" type="Sprite2D" parent="."]
+z_index = -2
+material = SubResource("ShaderMaterial_o6h0p")
+position = Vector2(-4.62064, -55.0332)
+scale = Vector2(6.42298, 0.572174)
+texture = ExtResource("7_ce76l")
+
+[node name="Control" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = -89.9501
+offset_top = -442.631
+offset_right = -49.9501
+offset_bottom = -402.631
+
+[node name="wds" type="HSlider" parent="Control"]
+layout_mode = 0
+offset_right = 81.0
+offset_bottom = 16.0
+scale = Vector2(3.32, 3.32)
+max_value = 1.0
+step = 0.01
+
+[node name="mask2" type="Node2D" parent="."]
+script = ExtResource("8_uytr1")
+
+[connection signal="value_changed" from="Control/wds" to="." method="_on_wds_value_changed"]
+[connection signal="value_changed" from="Control/wds" to="particles" method="_on_wds_value_changed"]

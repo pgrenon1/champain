@@ -39,11 +39,12 @@ func _physics_process(delta: float) -> void:
 	var player_pointing_angle
 	if use_mouse:
 		var mouse_pos = get_viewport().get_mouse_position()
-		player_pointing_angle = (position - mouse_pos).angle()
+		player_pointing_angle = (mouse_pos - position).angle()
 	else:
 		player_pointing_angle = ControllerManager.instance.get_player_angle(player_id)
 	
 	$debug.global_rotation = player_pointing_angle
+	$bottle.global_rotation = player_pointing_angle + PI / 2
 
 	var direction = Vector2.ZERO
 	
@@ -78,6 +79,10 @@ func _shake():
 	if _shake_count < spray_shake_max_count:
 		_shake_count += 1
 		_label.text = str(_shake_count)
+	sync_bottle_shake()
+
+func sync_bottle_shake():
+	$bottle/bottle.set_shake_value(float(_shake_count) / float(spray_shake_max_count))
 
 func _start_spraying(direction: Vector2):
 	_is_spraying = true
@@ -88,6 +93,7 @@ func _start_spraying(direction: Vector2):
 	_spray_timer = lerp(spray_min_duration, spray_max_duration, pop_power)
 	apply_impulse(direction * impulse)
 	_shake_count = 0
+	sync_bottle_shake()
 
 func validate_checkpoint(checkpoint_id: int):
 	if !validated_checkpoints.has(checkpoint_id):
