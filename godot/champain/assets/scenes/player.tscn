@@ -18,6 +18,9 @@ lock_rotation = true
 linear_damp = 1.5
 script = ExtResource("1_h6qqu")
 speed = 700
+spray_max_impulse = 400
+spray_max_force = 1200
+spray_max_duration = 1.5
 _sprite = NodePath("Sprite2D")
 metadata/_edit_group_ = true
 
