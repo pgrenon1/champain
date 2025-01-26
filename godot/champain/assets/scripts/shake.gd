@@ -7,13 +7,18 @@ extends Node2D
 @export var is_shaking: bool = false
 @export var curve: Curve
 
-@export var scale_fix = 0.103
+@export var scale_fix = 1.0
+
 
 var shake_amount = 0.0
 var initial_position: Vector2
 var time: float = 0.0
 
 func _ready():
+	if 'player_id' in get_parent().get_parent():
+		var mask_layer = get_parent().get_parent().player_id + 1
+		$mask.range_item_cull_mask = (1 << mask_layer)
+		$particles.light_mask = (1 << mask_layer)
 	initial_position = position
 
 func _process(delta):
@@ -48,3 +53,7 @@ func set_shake_value(value):
 	$particles.process_material.scale.x = (2 + 1.5 * value) * scale_fix
 	$particles.process_material.emission_box_extents = Vector3(1 + value, 1+ value, 1 + value)
 	self.shake_amount = curve.sample(value) * max_shake_amount
+
+
+func _on_wds_value_changed(value):
+	set_shake_value(value)

@@ -51,11 +51,12 @@ shader_parameter/mask_texture = ExtResource("8_njoj0")
 [node name="bottle" type="Node2D"]
 position = Vector2(222, 404)
 rotation = -0.00689539
+scale = Vector2(1e-05, 1e-05)
 script = ExtResource("1_i2noj")
 max_shake_amount = 25.0
 is_shaking = true
 curve = SubResource("Curve_tysf0")
-scale_fix = 0.5
+scale_fix = null
 
 [node name="particles" type="GPUParticles2D" parent="." groups=["trailable_particles"]]
 light_mask = 2

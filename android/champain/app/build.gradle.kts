@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
     alias(libs.plugins.kotlin.compose)
 }
 
@@ -14,8 +14,29 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+        
+        setProperty("archivesBaseName", "champain")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+    }
+
+    applicationVariants.all {
+        outputs.all {
+            val output = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+            output.outputFileName = "champain.apk"
+        }
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("champain.jks")
+            storePassword = "118149"
+            keyAlias = "champain"
+            keyPassword = "118149"
+        }
     }
 
     buildTypes {
@@ -25,6 +46,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -56,5 +78,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.socket.io.client)
+    implementation(libs.github.javaosc.core)
 }

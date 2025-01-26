@@ -1,0 +1,64 @@
+[gd_scene load_steps=11 format=3 uid="uid://cnk030t54nelj"]
+
+[ext_resource type="Texture2D" uid="uid://betgsj4q5hrtw" path="res://assets/graphics/bubble.png" id="1_5dxhj"]
+
+[sub_resource type="Curve" id="Curve_y5yo4"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.9, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_uxpsy"]
+curve = SubResource("Curve_y5yo4")
+
+[sub_resource type="Curve" id="Curve_m00p5"]
+max_value = 50.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 50), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ve117"]
+texture_mode = 1
+curve = SubResource("Curve_m00p5")
+
+[sub_resource type="Curve" id="Curve_vakc1"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, -1.66667, 0, 1, Vector2(0.6, 1.49012e-08), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_lcp8x"]
+curve_x = SubResource("Curve_vakc1")
+
+[sub_resource type="Curve" id="Curve_n1u8m"]
+max_value = 2.0
+_data = [Vector2(0, 0.50133), 0.0, 0.0, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(0.9, 1), 0.0, 0.0, 0, 0, Vector2(1, 2), 11.9941, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_8jgjn"]
+curve = SubResource("Curve_n1u8m")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_74bkw"]
+particle_flag_disable_z = true
+inherit_velocity_ratio = 0.19
+direction = Vector3(0, 0, 0)
+spread = 15.426
+initial_velocity_min = 264.77
+initial_velocity_max = 434.72
+directional_velocity_min = 1.0
+directional_velocity_max = 1.0
+directional_velocity_curve = SubResource("CurveXYZTexture_lcp8x")
+gravity = Vector3(0, 0, 0)
+damping_min = 10.251
+damping_max = 35.042
+damping_curve = SubResource("CurveTexture_ve117")
+scale_min = 0.2
+scale_max = 0.8
+scale_curve = SubResource("CurveTexture_8jgjn")
+alpha_curve = SubResource("CurveTexture_uxpsy")
+turbulence_noise_strength = 3.52
+
+[node name="spray" type="Node2D"]
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+amount = 500
+process_material = SubResource("ParticleProcessMaterial_74bkw")
+texture = ExtResource("1_5dxhj")
+lifetime = 2.0
+randomness = 0.5
