@@ -37,7 +37,6 @@ func launch():
 	_launched_duplicate.launch()
 	
 	visible = false
-	print("Dly")    
 		
 func _ready():
 	_initial_position = global_position
