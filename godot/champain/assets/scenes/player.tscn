@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b1qu7gq1j4y0u"]
+[gd_scene load_steps=15 format=3 uid="uid://b1qu7gq1j4y0u"]
 
 [ext_resource type="Script" path="res://assets/scripts/player_controller.gd" id="1_h6qqu"]
 [ext_resource type="Texture2D" uid="uid://ddty3uka0djv6" path="res://assets/graphics/players/green.png" id="2_41de8"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://vtlesceds08y" path="res://assets/graphics/ray.png" id="8_0givg"]
 [ext_resource type="PackedScene" uid="uid://ctc6ecnsm5i25" path="res://assets/scenes/bottle.tscn" id="9_nhphl"]
 [ext_resource type="FontFile" uid="uid://b8irqbncrt45c" path="res://assets/Quicksand-Bold.ttf" id="9_oi1mm"]
+[ext_resource type="Script" path="res://assets/scenes/audio_stream_player_pop.gd" id="11_tq7gp"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_p470m"]
 friction = 0.0
@@ -41,7 +42,7 @@ bottle = NodePath("bottle/bottle")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -7.88643)
+position = Vector2(0, -19.4321)
 scale = Vector2(0.65, 0.65)
 texture = ExtResource("2_41de8")
 script = ExtResource("2_wabwe")
@@ -78,5 +79,13 @@ max_shake_amount = 5.0
 shake_speed = 20.0
 is_shaking = false
 
+[node name="AudioStreamPlayer_Spray" type="AudioStreamPlayer2D" parent="."]
+
+[node name="AudioStreamPlayer_Pop" type="AudioStreamPlayer2D" parent="."]
+script = ExtResource("11_tq7gp")
+
+[connection signal="on_start_spraying" from="." to="AudioStreamPlayer_Spray" method="play"]
+[connection signal="on_start_spraying" from="." to="AudioStreamPlayer_Pop" method="play_random_pitch"]
 [connection signal="on_start_spraying" from="." to="bottle/bottle" method="toggle_spray" binds= [true]]
+[connection signal="on_stop_spraying" from="." to="AudioStreamPlayer_Spray" method="stop"]
 [connection signal="on_stop_spraying" from="." to="bottle/bottle" method="toggle_spray" binds= [false]]
