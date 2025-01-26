@@ -12,6 +12,7 @@ class_name Player extends RigidBody2D
 
 @export var player_id = 0
 @export var _sprite: Sprite2D
+@export var _label: Label
 var _original_scale
 @export var use_mouse = false
 var _spray_timer = 0.0
@@ -25,6 +26,7 @@ var player_controller
 
 func _ready() -> void:
 	_original_scale = _sprite.scale
+	_label.text = str(_shake_count)
 	pass
 	
 func _process(delta: float) -> void:
@@ -54,10 +56,8 @@ func _physics_process(delta: float) -> void:
 		direction = position - get_viewport().get_mouse_position()
 		direction = direction.normalized()
 		
-		if !_is_spraying and Input.is_action_just_pressed("shake" + str(player_id+1))\
-		and _shake_count < spray_shake_max_count:
-			_shake_count += 1
-			print("P" + str(player_id) + ": " + str(_shake_count) + "shakes")
+		if !_is_spraying and Input.is_action_just_pressed("shake" + str(player_id+1)):
+			_shake()
 			
 		if !_is_spraying and Input.is_action_just_pressed("move" + str(player_id+1)):
 			_start_spraying(direction)
@@ -65,9 +65,7 @@ func _physics_process(delta: float) -> void:
 		direction = -Vector2.from_angle(player_pointing_angle)
 		
 		if !_is_spraying and ControllerManager.instance.get_shake_down(player_id):
-			if _shake_count < spray_shake_max_count:
-				_shake_count += 1
-				print("P" + str(player_id) + ": " + str(_shake_count) + "shakes")
+			_shake()
 			
 		if !_is_spraying and ControllerManager.instance.get_pop_down(player_id):
 			_start_spraying(direction)
@@ -77,11 +75,17 @@ func _physics_process(delta: float) -> void:
 		apply_force(direction * _spray_force)
 		if _spray_timer <= 0:
 			_is_spraying = false
+			_label.text = str(_shake_count)
+
+func _shake():
+	if _shake_count < spray_shake_max_count:
+		_shake_count += 1
+		_label.text = str(_shake_count)
 
 func _start_spraying(direction: Vector2):
 	_is_spraying = true
 	var pop_power = _shake_count/float(spray_shake_max_count)
-	print("P" + str(player_id) + " pop power: " + str(pop_power))
+	_label.text = "POP!"
 	var impulse = lerp(spray_min_impulse, spray_max_impulse, pop_power)
 	_spray_force = lerp(spray_min_force, spray_max_force, pop_power)
 	_spray_timer = lerp(spray_min_duration, spray_max_duration, pop_power)
