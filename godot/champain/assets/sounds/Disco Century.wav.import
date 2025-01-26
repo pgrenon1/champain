@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cqaywt2ur5aty"
+path="res://.godot/imported/Disco Century.wav-d2b37fa6c628122043b5df69c73f5153.sample"
+
+[deps]
+
+source_file="res://assets/sounds/Disco Century.wav"
+dest_files=["res://.godot/imported/Disco Century.wav-d2b37fa6c628122043b5df69c73f5153.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
