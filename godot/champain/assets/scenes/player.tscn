@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b1qu7gq1j4y0u"]
+[gd_scene load_steps=12 format=3 uid="uid://b1qu7gq1j4y0u"]
 
 [ext_resource type="Script" path="res://assets/scripts/player_controller.gd" id="1_h6qqu"]
 [ext_resource type="Texture2D" uid="uid://ddty3uka0djv6" path="res://assets/graphics/players/green.png" id="2_41de8"]
@@ -16,7 +16,12 @@ bounce = 0.5
 [sub_resource type="CircleShape2D" id="CircleShape2D_7ghod"]
 radius = 253.18
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("_sprite")]
+[sub_resource type="LabelSettings" id="LabelSettings_oip06"]
+font_size = 56
+outline_size = 11
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("_sprite", "_label")]
 physics_material_override = SubResource("PhysicsMaterial_p470m")
 gravity_scale = 0.0
 can_sleep = false
@@ -27,7 +32,8 @@ speed = 700
 spray_max_impulse = 400
 spray_max_force = 1200
 spray_max_duration = 1.5
-_sprite = NodePath("")
+_sprite = NodePath("Sprite2D")
+_label = NodePath("Label")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -44,3 +50,13 @@ shape = SubResource("CircleShape2D_7ghod")
 [node name="debug" type="Sprite2D" parent="."]
 texture = ExtResource("8_0givg")
 offset = Vector2(50, 0)
+
+[node name="Label" type="Label" parent="."]
+offset_left = -7.0
+offset_top = -4.0
+offset_right = 33.0
+offset_bottom = 73.0
+scale = Vector2(0.341535, 0.341535)
+label_settings = SubResource("LabelSettings_oip06")
+horizontal_alignment = 1
+autowrap_mode = 2

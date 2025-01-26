@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b1qu7gq1j4y0u" path="res://assets/scenes/player.tscn" id="1_6nthd"]
 [ext_resource type="PackedScene" uid="uid://bhcrpvvrss881" path="res://assets/scenes/rectangle_wall.tscn" id="2_1eklx"]
 [ext_resource type="PackedScene" uid="uid://0uvlnkkx62ml" path="res://assets/scenes/race_finish.tscn" id="3_4u852"]
-[ext_resource type="PackedScene" uid="uid://dvgxpenu61vuv" path="res://assets/scenes/controllers.tscn" id="3_5xpd2"]
+[ext_resource type="PackedScene" path="res://assets/scenes/controllers.tscn" id="3_5xpd2"]
 [ext_resource type="PackedScene" uid="uid://boyg2fihjlwv0" path="res://assets/scenes/race_checkpoint.tscn" id="3_xvbif"]
 
 [node name="Race1" type="Node2D"]
