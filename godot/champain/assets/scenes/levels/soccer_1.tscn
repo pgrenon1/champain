@@ -98,53 +98,65 @@ label_settings = SubResource("LabelSettings_y0jem")
 horizontal_alignment = 1
 
 [node name="RectangleWall" parent="." instance=ExtResource("1_k8tx2")]
+visible = false
 position = Vector2(903, 1098)
 scale = Vector2(16.76, 1)
 
 [node name="RectangleWall2" parent="." instance=ExtResource("1_k8tx2")]
+visible = false
 position = Vector2(872, -78)
 scale = Vector2(16.76, 1)
 
 [node name="RectangleWall3" parent="." instance=ExtResource("1_k8tx2")]
+visible = false
 position = Vector2(1916, 496)
 scale = Vector2(1, 9.48)
 
 [node name="RectangleWall4" parent="." instance=ExtResource("1_k8tx2")]
+visible = false
 position = Vector2(-112, 501)
 scale = Vector2(1.16, 9.48)
 
 [node name="RectangleWall5" parent="." instance=ExtResource("1_k8tx2")]
+visible = false
 position = Vector2(13, 87)
 scale = Vector2(1.32, 3.86)
 
 [node name="RectangleWall6" parent="." instance=ExtResource("1_k8tx2")]
+visible = false
 position = Vector2(-10, 906)
 scale = Vector2(1.68, 3.46)
 
 [node name="RectangleWall7" parent="." instance=ExtResource("1_k8tx2")]
+visible = false
 position = Vector2(1829, 125)
 scale = Vector2(1.86064, 3.24404)
 
 [node name="RectangleWall8" parent="." instance=ExtResource("1_k8tx2")]
+visible = false
 position = Vector2(1801, 928)
 scale = Vector2(1.4, 3.82)
 
 [node name="RectangleWall9" parent="." instance=ExtResource("1_k8tx2")]
+visible = false
 position = Vector2(129, 41)
 rotation = 0.785397
 scale = Vector2(1.32, 3.86)
 
 [node name="RectangleWall10" parent="." instance=ExtResource("1_k8tx2")]
+visible = false
 position = Vector2(1666, 994)
 rotation = 0.785397
 scale = Vector2(1.32, 3.86)
 
 [node name="RectangleWall11" parent="." instance=ExtResource("1_k8tx2")]
+visible = false
 position = Vector2(1672, 31.0001)
 rotation = 2.35619
 scale = Vector2(1.32, 3.86)
 
 [node name="RectangleWall12" parent="." instance=ExtResource("1_k8tx2")]
+visible = false
 position = Vector2(145, 998)
 rotation = 2.35619
 scale = Vector2(1.32, 3.86)
