@@ -61,7 +61,8 @@ curve = SubResource("Curve_tysf0")
 light_mask = 2
 texture_filter = 4
 material = SubResource("CanvasItemMaterial_qckau")
-position = Vector2(-0.360016, -0.960022)
+position = Vector2(-17.3926, 56.8814)
+scale = Vector2(1.2, 1)
 amount = 500
 process_material = SubResource("ParticleProcessMaterial_j456o")
 texture = ExtResource("2_wi00y")
@@ -83,7 +84,7 @@ position = Vector2(-4.36002, -76.96)
 blend_mode = 1
 range_item_cull_mask = 2
 texture = ExtResource("6_kwvui")
-texture_scale = 4.07
+texture_scale = 3.2
 
 [node name="gradient" type="Sprite2D" parent="."]
 z_index = -2
