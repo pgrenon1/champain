@@ -1,12 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://dk3xg70mar83t"]
+[gd_scene load_steps=14 format=3 uid="uid://dwndwq4yhbf0x"]
 
 [ext_resource type="PackedScene" uid="uid://bhcrpvvrss881" path="res://assets/scenes/rectangle_wall.tscn" id="1_k8tx2"]
-[ext_resource type="PackedScene" path="res://assets/scenes/ball.tscn" id="2_hj2h3"]
+[ext_resource type="PackedScene" uid="uid://nemyswgvobc8" path="res://assets/scenes/ball.tscn" id="2_hj2h3"]
+[ext_resource type="PackedScene" uid="uid://b1qu7gq1j4y0u" path="res://assets/scenes/player.tscn" id="3_ep1f4"]
 [ext_resource type="FontFile" uid="uid://b8irqbncrt45c" path="res://assets/Quicksand-Bold.ttf" id="4_qa7mq"]
+[ext_resource type="PackedScene" path="res://assets/scenes/controllers.tscn" id="4_vqnau"]
 [ext_resource type="FontFile" uid="uid://sr25emn68gvy" path="res://assets/Quicksand-Regular.ttf" id="5_c8ssn"]
+[ext_resource type="Script" path="res://assets/scenes/levels/spawn_manager.gd" id="5_daidp"]
 [ext_resource type="PackedScene" uid="uid://r363kwfebbi" path="res://assets/scenes/spawn.tscn" id="6_k8mo5"]
 [ext_resource type="Script" path="res://assets/scripts/soccer_gamemode.gd" id="7_kkrwa"]
-[ext_resource type="PackedScene" path="res://assets/scenes/goal.tscn" id="8_xr3rv"]
+[ext_resource type="PackedScene" uid="uid://ryrscuan21ce" path="res://assets/scenes/goal.tscn" id="8_xr3rv"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_7b7lr"]
 font = ExtResource("4_qa7mq")
@@ -29,10 +32,8 @@ outline_color = Color(0, 0, 0, 1)
 [node name="Soccer1" type="Node2D"]
 position = Vector2(56, 30)
 
-[node name="SoccerGamemode" type="Node" parent="." node_paths=PackedStringArray("_ball", "_ball_spawn", "_score", "_timer", "_announcer")]
+[node name="SoccerGamemode" type="Node" parent="." node_paths=PackedStringArray("_score", "_timer", "_announcer")]
 script = ExtResource("7_kkrwa")
-_ball = NodePath("Ball")
-_ball_spawn = NodePath("BallSpawnPosition")
 _score = NodePath("UI/Score")
 _timer = NodePath("UI/Timer")
 _announcer = NodePath("UI/Announcer")
@@ -61,24 +62,24 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Score" type="Label" parent="SoccerGamemode/UI"]
-custom_minimum_size = Vector2(600, 0)
 layout_mode = 0
-offset_left = 632.0
-offset_top = 24.0
-offset_right = 1232.0
-offset_bottom = 199.0
-text = "0            0"
+offset_left = 800.0
+offset_top = 96.0
+offset_right = 1054.0
+offset_bottom = 271.0
+text = "2 - 0"
 label_settings = SubResource("LabelSettings_7b7lr")
 horizontal_alignment = 1
 
 [node name="Timer" type="Label" parent="SoccerGamemode/UI"]
 layout_mode = 0
-offset_left = 864.0
-offset_top = 48.0
-offset_right = 1118.0
-offset_bottom = 223.0
+offset_left = 800.0
+offset_top = 24.0
+offset_right = 1054.0
+offset_bottom = 199.0
 text = "3:00"
 label_settings = SubResource("LabelSettings_g61bn")
+horizontal_alignment = 1
 
 [node name="Announcer" type="Label" parent="SoccerGamemode/UI"]
 custom_minimum_size = Vector2(900, 0)
@@ -123,7 +124,30 @@ scale = Vector2(1, 2.5)
 position = Vector2(1768, 866)
 scale = Vector2(1, 2.5)
 
-[node name="SpawnPositions" type="Node2D" parent="." groups=["spawn_positions"]]
+[node name="Player" parent="." instance=ExtResource("3_ep1f4")]
+position = Vector2(1480, 498)
+linear_damp = 1.0
+use_mouse = true
+
+[node name="Player2" parent="." instance=ExtResource("3_ep1f4")]
+position = Vector2(264, 553)
+player_id = 1
+
+[node name="Player3" parent="." instance=ExtResource("3_ep1f4")]
+position = Vector2(1616, 162)
+player_id = 2
+
+[node name="Player4" parent="." instance=ExtResource("3_ep1f4")]
+position = Vector2(1616, 842)
+player_id = 3
+
+[node name="Controllers" parent="." instance=ExtResource("4_vqnau")]
+
+[node name="SpawnManager" type="Node" parent="."]
+script = ExtResource("5_daidp")
+player_scene = ExtResource("3_ep1f4")
+
+[node name="SpawnPositions" type="Node2D" parent="."]
 
 [node name="Spawn" parent="SpawnPositions" instance=ExtResource("6_k8mo5")]
 position = Vector2(264, 162)

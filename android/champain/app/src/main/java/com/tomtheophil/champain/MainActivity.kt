@@ -1,14 +1,11 @@
 package com.tomtheophil.champain
 
 import android.content.Context
-import android.hardware.Sensor
-import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
-import android.util.Log
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,39 +13,41 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DrawerDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults
@@ -72,8 +71,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -85,8 +84,8 @@ import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 class MainActivity : ComponentActivity() {
+    internal lateinit var windowComponents: WindowComponents
     private lateinit var sensors: SensorComponents
-    private lateinit var windowComponents: WindowComponents
     private lateinit var haptics: HapticsManager
     private var pressure = 0
 
@@ -191,17 +190,23 @@ class MainActivity : ComponentActivity() {
 /**
  * Manages window-related components and settings
  */
-private class WindowComponents(private val window: android.view.Window) {
+internal class WindowComponents(private val window: android.view.Window) {
     private val insetsController = WindowCompat.getInsetsController(window, window.decorView)
 
     init {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        
+        // Always hide system bars
+        insetsController.apply {
+            hide(WindowInsetsCompat.Type.systemBars())
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 
     fun cleanup() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        insetsController.show(WindowInsetsCompat.Type.systemBars())
+        // Don't show system bars on cleanup
     }
 }
 
@@ -237,6 +242,7 @@ private class HapticsManager(context: Context) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun MainScreen(
     sensors: SensorComponents,
@@ -246,6 +252,7 @@ private fun MainScreen(
     var selectedPage by remember { mutableStateOf(0) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val systemBarsPadding = WindowInsets.systemBars.asPaddingValues()
 
     NavigationDrawer(
         drawerState = drawerState,
@@ -254,12 +261,135 @@ private fun MainScreen(
         onCalibrate = { sensors.orientationDetector.calibrate() },
         scope = scope
     ) {
-        GameContent(
-            selectedPage = selectedPage,
-            sensors = sensors,
-            onPop = onPop,
-            modifier = modifier
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            UIConstants.CHAMPAGNE_LIGHT,
+                            UIConstants.CHAMPAGNE_MEDIUM,
+                            UIConstants.CHAMPAGNE_MEDIUM,
+                            UIConstants.CHAMPAGNE_DARK
+                        )
+                    )
+                )
+        ) {
+            when (selectedPage) {
+                0 -> {
+                    Scaffold(
+                        modifier = Modifier.fillMaxSize(),
+                        topBar = {
+                            TopAppBar(
+                                title = { },
+                                navigationIcon = {
+                                    IconButton(
+                                        onClick = { 
+                                            scope.launch { 
+                                                if (drawerState.isClosed) {
+                                                    drawerState.open()
+                                                } else {
+                                                    drawerState.close()
+                                                }
+                                            }
+                                        },
+                                        modifier = Modifier.padding(top = systemBarsPadding.calculateTopPadding())
+                                    ) {
+                                        Icon(
+                                            Icons.Default.Menu,
+                                            contentDescription = "Menu",
+                                            tint = Color.Black
+                                        )
+                                    }
+                                },
+                                colors = TopAppBarDefaults.topAppBarColors(
+                                    containerColor = Color.Transparent,
+                                    navigationIconContentColor = Color.Black
+                                )
+                            )
+                        },
+                        contentWindowInsets = ScaffoldDefaults.contentWindowInsets,
+                        containerColor = Color.Transparent
+                    ) { paddingValues ->
+                        Game(
+                            frequency = sensors.shakeDetector.currentFrequency.floatValue,
+                            connectionManager = sensors.connectionManager,
+                            onPop = onPop,
+                            modifier = Modifier.padding(paddingValues)
+                        )
+                    }
+                }
+                1 -> {
+                    val pagerState = rememberPagerState { 3 }
+                    
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        TopAppBar(
+                            title = { },
+                            navigationIcon = {
+                                IconButton(
+                                    onClick = { 
+                                        scope.launch { 
+                                            if (drawerState.isClosed) {
+                                                drawerState.open()
+                                            } else {
+                                                drawerState.close()
+                                            }
+                                        }
+                                    },
+                                    modifier = Modifier.padding(top = systemBarsPadding.calculateTopPadding())
+                                ) {
+                                    Icon(
+                                        Icons.Default.Menu,
+                                        contentDescription = "Menu",
+                                        tint = UIConstants.CONTENT_PRIMARY
+                                    )
+                                }
+                            },
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = UIConstants.UI_DARK,
+                                navigationIconContentColor = UIConstants.CONTENT_PRIMARY
+                            )
+                        )
+
+                        TabRow(
+                            selectedTabIndex = pagerState.currentPage,
+                            containerColor = UIConstants.UI_DARK,
+                            contentColor = UIConstants.CONTENT_PRIMARY,
+                            indicator = { tabPositions ->
+                                TabRowDefaults.Indicator(
+                                    modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
+                                    color = UIConstants.CONTENT_PRIMARY
+                                )
+                            }
+                        ) {
+                            Tab(
+                                selected = pagerState.currentPage == 0,
+                                onClick = { scope.launch { pagerState.animateScrollToPage(0) } },
+                                text = { Text("Shake", color = UIConstants.CONTENT_PRIMARY) }
+                            )
+                            Tab(
+                                selected = pagerState.currentPage == 1,
+                                onClick = { scope.launch { pagerState.animateScrollToPage(1) } },
+                                text = { Text("Orientation", color = UIConstants.CONTENT_PRIMARY) }
+                            )
+                            Tab(
+                                selected = pagerState.currentPage == 2,
+                                onClick = { scope.launch { pagerState.animateScrollToPage(2) } },
+                                text = { Text("Connection", color = UIConstants.CONTENT_PRIMARY) }
+                            )
+                        }
+                        
+                        SettingsPage(
+                            shakeDetector = sensors.shakeDetector,
+                            orientationDetector = sensors.orientationDetector,
+                            connectionManager = sensors.connectionManager,
+                            pagerState = pagerState,
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -555,7 +685,7 @@ fun OrientationPage(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SettingsPage(
+private fun SettingsPage(
     shakeDetector: ShakeDetector,
     orientationDetector: OrientationDetector,
     connectionManager: ConnectionManager,
@@ -565,8 +695,6 @@ fun SettingsPage(
     HorizontalPager(
         state = pagerState,
         modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
     ) { page ->
         when (page) {
             0 -> ShakePage(
@@ -599,6 +727,342 @@ fun SettingsPage(
                 connectionManager = connectionManager,
                 modifier = Modifier.fillMaxSize()
             )
+        }
+    }
+}
+
+@Composable
+private fun SettingsSlider(
+    value: Float,
+    onValueChange: (Float) -> Unit,
+    valueRange: ClosedFloatingPointRange<Float>,
+    modifier: Modifier = Modifier
+) {
+    Slider(
+        value = value,
+        onValueChange = onValueChange,
+        valueRange = valueRange,
+        modifier = modifier,
+        colors = SliderDefaults.colors(
+            thumbColor = UIConstants.CONTENT_PRIMARY,
+            activeTrackColor = UIConstants.CONTENT_PRIMARY,
+            inactiveTrackColor = UIConstants.CONTENT_SECONDARY
+        )
+    )
+}
+
+@Composable
+private fun SettingsButton(
+    onClick: () -> Unit,
+    text: String,
+    enabled: Boolean = true,
+    modifier: Modifier = Modifier
+) {
+    FilledTonalButton(
+        onClick = onClick,
+        enabled = enabled,
+        modifier = modifier,
+        shape = UIConstants.SHAPE_MEDIUM,
+        colors = ButtonDefaults.filledTonalButtonColors(
+            containerColor = UIConstants.UI_DARK,
+            contentColor = UIConstants.CONTENT_PRIMARY,
+            disabledContainerColor = UIConstants.UI_MEDIUM,
+            disabledContentColor = UIConstants.CONTENT_DISABLED
+        )
+    ) {
+        Text(text, fontFamily = FontFamily.Monospace)
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun GameContent(
+    selectedPage: Int,
+    sensors: SensorComponents,
+    onPop: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    when (selectedPage) {
+        0 -> Game(
+            frequency = sensors.shakeDetector.currentFrequency.floatValue,
+            connectionManager = sensors.connectionManager,
+            onPop = onPop,
+            modifier = modifier
+        )
+        1 -> {
+            Column(modifier = modifier.fillMaxSize()) {
+                val pagerState = rememberPagerState { 3 }
+                val scope = rememberCoroutineScope()
+                
+                // Tabs
+                TabRow(
+                    selectedTabIndex = pagerState.currentPage,
+                    containerColor = Color.Black.copy(alpha = 0.5f),
+                    contentColor = Color.White,
+                ) {
+                    Tab(
+                        selected = pagerState.currentPage == 0,
+                        onClick = { scope.launch { pagerState.animateScrollToPage(0) } },
+                        text = { Text("Shake", color = Color.White) }
+                    )
+                    Tab(
+                        selected = pagerState.currentPage == 1,
+                        onClick = { scope.launch { pagerState.animateScrollToPage(1) } },
+                        text = { Text("Orientation", color = Color.White) }
+                    )
+                    Tab(
+                        selected = pagerState.currentPage == 2,
+                        onClick = { scope.launch { pagerState.animateScrollToPage(2) } },
+                        text = { Text("Connection", color = Color.White) }
+                    )
+                }
+
+                // Pages
+                SettingsPage(
+                    shakeDetector = sensors.shakeDetector,
+                    orientationDetector = sensors.orientationDetector,
+                    connectionManager = sensors.connectionManager,
+                    pagerState = pagerState,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ConnectionPage(
+    connectionManager: ConnectionManager,
+    modifier: Modifier = Modifier
+) {
+    var showDialog by remember { mutableStateOf(false) }
+    var ipAddress by remember { mutableStateOf(connectionManager.getLastIpAddress() ?: "") }
+    var port by remember { mutableStateOf(connectionManager.getLastPort() ?: "") }
+    var connectionStatus by remember { mutableStateOf("Disconnected") }
+    val deviceId = connectionManager.getDeviceId()
+    val isConnected = connectionManager.isConnected()
+
+    if (showDialog) {
+        ConnectionDialog(
+            ipAddress = ipAddress,
+            port = port,
+            onIpChange = { ipAddress = it },
+            onPortChange = { port = it },
+            onDismiss = { showDialog = false },
+            onConfirm = {
+                try {
+                    val portInt = port.toInt()
+                    if (connectionManager.connect(ipAddress, portInt)) {
+                        connectionStatus = "Connected to $ipAddress:$port"
+                    } else {
+                        connectionStatus = "Failed to connect"
+                    }
+                } catch (e: Exception) {
+                    connectionStatus = "Invalid port number"
+                }
+                showDialog = false
+            }
+        )
+    }
+
+    ConnectionPageContent(
+        connectionStatus = connectionStatus,
+        deviceId = deviceId,
+        isConnected = isConnected,
+        onConnect = { showDialog = true },
+        onDisconnect = {
+            connectionManager.disconnect()
+            connectionStatus = "Disconnected"
+        },
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun ConnectionPageContent(
+    connectionStatus: String,
+    deviceId: String,
+    isConnected: Boolean,
+    onConnect: () -> Unit,
+    onDisconnect: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            "Connection Status",
+            style = MaterialTheme.typography.titleLarge,
+            fontFamily = FontFamily.Monospace,
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            SettingsButton(
+                onClick = onConnect,
+                text = "Connect",
+                enabled = !isConnected,
+                modifier = Modifier.weight(1f)
+            )
+
+            SettingsButton(
+                onClick = onDisconnect,
+                text = "Disconnect",
+                enabled = isConnected,
+                modifier = Modifier.weight(1f)
+            )
+        }
+
+        ConnectionInfo(
+            status = connectionStatus,
+            deviceId = deviceId
+        )
+    }
+}
+
+@Composable
+private fun ConnectionInfo(
+    status: String,
+    deviceId: String
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            "Status: $status",
+            style = MaterialTheme.typography.bodyLarge,
+            fontFamily = FontFamily.Monospace,
+        )
+        Text(
+            "Device ID: $deviceId",
+            style = MaterialTheme.typography.bodyLarge,
+            fontFamily = FontFamily.Monospace,
+        )
+    }
+}
+
+@Composable
+private fun ConnectionDialog(
+    ipAddress: String,
+    port: String,
+    onIpChange: (String) -> Unit,
+    onPortChange: (String) -> Unit,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            shape = UIConstants.SHAPE_MEDIUM,
+            color = UIConstants.UI_DARK
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Text(
+                    "Enter Connection Details",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontFamily = FontFamily.Monospace,
+                    color = UIConstants.CONTENT_PRIMARY
+                )
+
+                BasicTextField(
+                    value = ipAddress,
+                    onValueChange = onIpChange,
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(
+                        color = UIConstants.CONTENT_PRIMARY,
+                        fontFamily = FontFamily.Monospace
+                    ),
+                    decorationBox = { innerTextField ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(
+                                    1.dp,
+                                    UIConstants.CONTENT_SECONDARY,
+                                    UIConstants.SHAPE_SMALL
+                                )
+                                .padding(16.dp)
+                        ) {
+                            if (ipAddress.isEmpty()) {
+                                Text(
+                                    "IP Address",
+                                    color = UIConstants.CONTENT_SECONDARY,
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
+                            innerTextField()
+                        }
+                    },
+                    singleLine = true
+                )
+
+                BasicTextField(
+                    value = port,
+                    onValueChange = onPortChange,
+                    textStyle = MaterialTheme.typography.bodyLarge.copy(
+                        color = UIConstants.CONTENT_PRIMARY,
+                        fontFamily = FontFamily.Monospace
+                    ),
+                    decorationBox = { innerTextField ->
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .border(
+                                    1.dp,
+                                    UIConstants.CONTENT_SECONDARY,
+                                    UIConstants.SHAPE_SMALL
+                                )
+                                .padding(16.dp)
+                        ) {
+                            if (port.isEmpty()) {
+                                Text(
+                                    "Port",
+                                    color = UIConstants.CONTENT_SECONDARY,
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
+                            innerTextField()
+                        }
+                    },
+                    singleLine = true
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(
+                        onClick = onDismiss,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = UIConstants.UI_MEDIUM,
+                            contentColor = UIConstants.CONTENT_PRIMARY
+                        ),
+                        modifier = Modifier.padding(end = 8.dp)
+                    ) {
+                        Text("Cancel")
+                    }
+                    Button(
+                        onClick = onConfirm,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = UIConstants.UI_DARK,
+                            contentColor = UIConstants.CONTENT_PRIMARY
+                        )
+                    ) {
+                        Text("Connect")
+                    }
+                }
+            }
         }
     }
 }

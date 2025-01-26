@@ -26,59 +26,56 @@ fun NavigationDrawer(
         drawerState = drawerState,
         gesturesEnabled = false,
         drawerContent = {
-            Box(modifier = Modifier.fillMaxHeight()) {
-                ModalDrawerSheet(
-                    drawerContainerColor = Color.Black.copy(alpha = 0.5f),
-                    windowInsets = DrawerDefaults.windowInsets,
-                    modifier = Modifier.align(Alignment.TopEnd)
+            ModalDrawerSheet(
+                drawerContainerColor = Color.Black.copy(alpha = 0.5f),
+                modifier = Modifier.width(200.dp)
+            ) {
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     NavigationDrawerItem(
-                        label = { 
-                            Text(
-                                "Game",
-                                fontFamily = FontFamily.Monospace,
-                                textAlign = TextAlign.End,
-                                modifier = Modifier.fillMaxWidth(),
-                                color = Color.White
-                            )
-                        },
+                        label = { Text("Game", color = Color.White) },
                         selected = selectedPage == 0,
                         onClick = {
                             onPageSelected(0)
                             scope.launch { drawerState.close() }
-                        }
-                    )
-                    NavigationDrawerItem(
-                        label = { 
-                            Text(
-                                "Settings",
-                                fontFamily = FontFamily.Monospace,
-                                textAlign = TextAlign.End,
-                                modifier = Modifier.fillMaxWidth(),
-                                color = Color.White
-                            )
                         },
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        colors = NavigationDrawerItemDefaults.colors(
+                            unselectedContainerColor = Color.Transparent,
+                            selectedContainerColor = Color.White.copy(alpha = 0.2f)
+                        )
+                    )
+
+                    NavigationDrawerItem(
+                        label = { Text("Settings", color = Color.White) },
                         selected = selectedPage == 1,
                         onClick = {
                             onPageSelected(1)
                             scope.launch { drawerState.close() }
-                        }
-                    )
-                    NavigationDrawerItem(
-                        label = { 
-                            Text(
-                                "Calibrate",
-                                fontFamily = FontFamily.Monospace,
-                                textAlign = TextAlign.End,
-                                modifier = Modifier.fillMaxWidth(),
-                                color = Color.White
-                            )
                         },
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        colors = NavigationDrawerItemDefaults.colors(
+                            unselectedContainerColor = Color.Transparent,
+                            selectedContainerColor = Color.White.copy(alpha = 0.2f)
+                        )
+                    )
+
+                    NavigationDrawerItem(
+                        label = { Text("Calibrate", color = Color.White) },
                         selected = false,
                         onClick = {
                             onCalibrate()
                             scope.launch { drawerState.close() }
-                        }
+                        },
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        colors = NavigationDrawerItemDefaults.colors(
+                            unselectedContainerColor = Color.Transparent,
+                            selectedContainerColor = Color.White.copy(alpha = 0.2f)
+                        )
                     )
                 }
             }
