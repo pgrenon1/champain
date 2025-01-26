@@ -27,7 +27,13 @@ func _ready() -> void:
 	pass
 	
 func _physics_process(delta: float) -> void:
-	var player_pointing_angle = ControllerManager.instance.get_player_angle(player_id)
+	var player_pointing_angle
+	if use_mouse:
+		var mouse_pos = get_viewport().get_mouse_position()
+		player_pointing_angle = (position - mouse_pos).angle()
+	else:
+		player_pointing_angle = ControllerManager.instance.get_player_angle(player_id)
+	
 	$debug.global_rotation = player_pointing_angle
 
 	var direction = Vector2.ZERO
