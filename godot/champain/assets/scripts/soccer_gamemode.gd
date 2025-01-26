@@ -28,7 +28,7 @@ func _process(delta: float) -> void:
 func goal_scored(team_id: int):
 	_team_scores[team_id] += 1
 	_score.text = str(_team_scores[0]) + "            " + str(_team_scores[1])
-	_announcer.text = "GOAL!"
+	#_announcer.text = "GOAL!"
 	_ball.set_linear_velocity(Vector2())
 	_ball.set_angular_velocity(0.0)
 	_ball.global_translate(_ball_spawn.global_position - _ball.global_position)

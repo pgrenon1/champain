@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://b1qu7gq1j4y0u"]
+[gd_scene load_steps=14 format=3 uid="uid://b1qu7gq1j4y0u"]
 
 [ext_resource type="Script" path="res://assets/scripts/player_controller.gd" id="1_h6qqu"]
 [ext_resource type="Texture2D" uid="uid://ddty3uka0djv6" path="res://assets/graphics/players/green.png" id="2_41de8"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bdistmynmx5pb" path="res://assets/graphics/players/yellow.png" id="7_ppmdj"]
 [ext_resource type="Texture2D" uid="uid://vtlesceds08y" path="res://assets/graphics/ray.png" id="8_0givg"]
 [ext_resource type="PackedScene" uid="uid://ctc6ecnsm5i25" path="res://assets/scenes/bottle.tscn" id="9_nhphl"]
+[ext_resource type="FontFile" uid="uid://b8irqbncrt45c" path="res://assets/Quicksand-Bold.ttf" id="9_oi1mm"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_p470m"]
 friction = 0.0
@@ -18,28 +19,29 @@ bounce = 0.5
 radius = 43.1045
 
 [sub_resource type="LabelSettings" id="LabelSettings_oip06"]
+font = ExtResource("9_oi1mm")
 font_size = 120
-outline_size = 11
+outline_size = 20
 outline_color = Color(0, 0, 0, 1)
 
-[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("_sprite", "_label")]
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("_sprite", "_label", "bottle")]
 physics_material_override = SubResource("PhysicsMaterial_p470m")
 gravity_scale = 0.0
 can_sleep = false
 lock_rotation = true
 linear_damp = 1.5
 script = ExtResource("1_h6qqu")
-debug = true
-spray_shake_max_count = 12
-spray_max_impulse = 400
-spray_max_force = 800
-spray_max_duration = 2.5
+spray_shake_max_count = 25
+spray_max_impulse = 800
+spray_max_force = 1600
+spray_max_duration = 4.0
 _sprite = NodePath("Sprite2D")
 _label = NodePath("Label")
+bottle = NodePath("bottle/bottle")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -11.024)
+position = Vector2(0, -15.5248)
 scale = Vector2(0.65, 0.65)
 texture = ExtResource("2_41de8")
 script = ExtResource("2_wabwe")
@@ -56,12 +58,12 @@ texture = ExtResource("8_0givg")
 offset = Vector2(50, 0)
 
 [node name="Label" type="Label" parent="."]
-offset_left = -7.0
-offset_top = -4.0
-offset_right = 33.0
-offset_bottom = 161.0
+custom_minimum_size = Vector2(400, 0)
+offset_left = -67.0
+offset_top = -88.0
+offset_right = 333.0
+offset_bottom = 77.0
 scale = Vector2(0.341535, 0.341535)
-text = "1"
 label_settings = SubResource("LabelSettings_oip06")
 horizontal_alignment = 1
 autowrap_mode = 2
