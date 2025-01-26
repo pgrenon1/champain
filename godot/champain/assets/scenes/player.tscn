@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b1qu7gq1j4y0u"]
+[gd_scene load_steps=23 format=3 uid="uid://b1qu7gq1j4y0u"]
 
 [ext_resource type="Script" path="res://assets/scripts/player_controller.gd" id="1_h6qqu"]
 [ext_resource type="Texture2D" uid="uid://ddty3uka0djv6" path="res://assets/graphics/players/green.png" id="2_41de8"]
@@ -10,6 +10,13 @@
 [ext_resource type="Texture2D" uid="uid://vtlesceds08y" path="res://assets/graphics/ray.png" id="8_0givg"]
 [ext_resource type="PackedScene" uid="uid://ctc6ecnsm5i25" path="res://assets/scenes/bottle.tscn" id="9_nhphl"]
 [ext_resource type="FontFile" uid="uid://b8irqbncrt45c" path="res://assets/Quicksand-Bold.ttf" id="9_oi1mm"]
+[ext_resource type="AudioStream" uid="uid://dkiicu8wl8oqs" path="res://assets/sounds/spray.wav" id="11_y1roe"]
+[ext_resource type="AudioStream" uid="uid://c0apxbp85clfn" path="res://assets/sounds/shake1.wav" id="12_57wyt"]
+[ext_resource type="AudioStream" uid="uid://w3kxdy48u14u" path="res://assets/sounds/shake2.wav" id="13_tfqnl"]
+[ext_resource type="AudioStream" uid="uid://ddg3mvkdda3em" path="res://assets/sounds/shake3.wav" id="14_hvmio"]
+[ext_resource type="AudioStream" uid="uid://crv6rpl4d6bie" path="res://assets/sounds/shake4.wav" id="15_odpys"]
+[ext_resource type="AudioStream" uid="uid://f8jixibx16xs" path="res://assets/sounds/shake5.wav" id="16_lcsmr"]
+[ext_resource type="AudioStream" uid="uid://b1ax1ymlqlpl4" path="res://assets/sounds/shake6.wav" id="17_6xjfl"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_p470m"]
 friction = 0.0
@@ -26,9 +33,18 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_nke1j"]
 random_pitch = 1.05
+streams_count = 1
+stream_0/stream = ExtResource("11_y1roe")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_w6thy"]
 random_pitch = 1.1
+streams_count = 6
+stream_0/stream = ExtResource("12_57wyt")
+stream_1/stream = ExtResource("13_tfqnl")
+stream_2/stream = ExtResource("14_hvmio")
+stream_3/stream = ExtResource("15_odpys")
+stream_4/stream = ExtResource("16_lcsmr")
+stream_5/stream = ExtResource("17_6xjfl")
 
 [node name="Player" type="RigidBody2D" node_paths=PackedStringArray("_sprite", "_label", "bottle")]
 physics_material_override = SubResource("PhysicsMaterial_p470m")
@@ -47,7 +63,7 @@ bottle = NodePath("bottle/bottle")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -19.3513)
+position = Vector2(0, -23.3607)
 scale = Vector2(0.65, 0.65)
 texture = ExtResource("2_41de8")
 script = ExtResource("2_wabwe")
@@ -85,6 +101,10 @@ position = Vector2(0, 0)
 stream = SubResource("AudioStreamRandomizer_nke1j")
 
 [node name="AudioStreamPlayer_Pop" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_w6thy")
+
+[node name="AudioStreamPlayer_Shake" type="AudioStreamPlayer2D" parent="."]
+unique_name_in_owner = true
 stream = SubResource("AudioStreamRandomizer_w6thy")
 
 [connection signal="on_start_spraying" from="." to="AudioStreamPlayer_Spray" method="play"]

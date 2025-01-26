@@ -49,6 +49,7 @@ func shake_once():
 	_shake_once_tween = get_tree().create_tween()
 	_shake_once_tween.tween_property(self, "position", initial_position + Vector2.UP * 200, 0.1)
 	_shake_once_tween.tween_property(self, "position", position, 0.1)
+	%AudioStreamPlayer_Shake.play()
 
 # Call this to start shaking
 func start_shake():
