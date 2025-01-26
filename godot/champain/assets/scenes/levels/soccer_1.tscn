@@ -1,10 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://dwndwq4yhbf0x"]
+[gd_scene load_steps=6 format=3 uid="uid://dk3xg70mar83t"]
 
 [ext_resource type="PackedScene" uid="uid://bhcrpvvrss881" path="res://assets/scenes/rectangle_wall.tscn" id="1_k8tx2"]
 [ext_resource type="Texture2D" uid="uid://cu57xwmw3sqsy" path="res://assets/graphics/circle.png" id="2_gydi1"]
-[ext_resource type="PackedScene" uid="uid://b1qu7gq1j4y0u" path="res://assets/scenes/player.tscn" id="3_ep1f4"]
-[ext_resource type="PackedScene" path="res://assets/scenes/controllers.tscn" id="4_vqnau"]
-[ext_resource type="Script" path="res://assets/scenes/levels/spawn_manager.gd" id="5_daidp"]
 [ext_resource type="PackedScene" uid="uid://r363kwfebbi" path="res://assets/scenes/spawn.tscn" id="6_k8mo5"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_susp4"]
@@ -65,33 +62,11 @@ texture = ExtResource("2_gydi1")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
 shape = SubResource("CircleShape2D_ns7lk")
 
-[node name="Player" parent="." instance=ExtResource("3_ep1f4")]
-position = Vector2(264, 442)
-linear_damp = 1.0
-use_mouse = true
+[node name="spawn_positions" type="Node2D" parent="." groups=["spawn_positions"]]
+unique_name_in_owner = true
 
-[node name="Player2" parent="." instance=ExtResource("3_ep1f4")]
-position = Vector2(264, 553)
-player_id = 1
-
-[node name="Player3" parent="." instance=ExtResource("3_ep1f4")]
-position = Vector2(1616, 442)
-player_id = 2
-
-[node name="Player4" parent="." instance=ExtResource("3_ep1f4")]
-position = Vector2(1616, 558)
-player_id = 3
-
-[node name="Controllers" parent="." instance=ExtResource("4_vqnau")]
-
-[node name="SpawnManager" type="Node" parent="."]
-script = ExtResource("5_daidp")
-player_scene = ExtResource("3_ep1f4")
-
-[node name="SpawnPositions" type="Node2D" parent="."]
-
-[node name="Spawn" parent="SpawnPositions" instance=ExtResource("6_k8mo5")]
+[node name="Spawn" parent="spawn_positions" instance=ExtResource("6_k8mo5")]
 position = Vector2(264, 162)
 
-[node name="Spawn2" parent="SpawnPositions" instance=ExtResource("6_k8mo5")]
+[node name="Spawn2" parent="spawn_positions" instance=ExtResource("6_k8mo5")]
 position = Vector2(264, 866)

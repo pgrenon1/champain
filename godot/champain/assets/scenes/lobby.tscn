@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dibh127hh8np0"]
+
+[ext_resource type="PackedScene" uid="uid://r363kwfebbi" path="res://assets/scenes/spawn.tscn" id="1_7l3cp"]
+[ext_resource type="Script" path="res://assets/scripts/lobby.gd" id="1_68fj7"]
+
+[node name="Lobby" type="Node2D"]
+script = ExtResource("1_68fj7")
+
+[node name="spawn_positions" type="Node2D" parent="." groups=["spawn_positions"]]
+unique_name_in_owner = true
+
+[node name="Spawn" parent="spawn_positions" instance=ExtResource("1_7l3cp")]
+position = Vector2(264, 162)
+
+[node name="Spawn2" parent="spawn_positions" instance=ExtResource("1_7l3cp")]
+position = Vector2(264, 866)

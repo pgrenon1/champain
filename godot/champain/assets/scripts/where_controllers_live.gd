@@ -1,6 +1,8 @@
 class_name ControllerManager
 extends Node
 
+signal player_added(player_id: int)
+
 static var instance: ControllerManager = null
 
 var players = {}  # Dictionary for player tracking
@@ -17,8 +19,14 @@ var _last_frame_pops = {}      # Pops that happened last frame
 var _pop_timestamps = {}       # Last pop timestamp per player
 
 func _ready():
-	self.instance = self
-	
+	if not self.instance:
+		var osc_server = OSCServer.new()
+		add_child(osc_server)
+		osc_server.name = "OSCServer"
+		
+		osc_server.message_received.connect(_on_node_2d_message_received)
+		self.instance = self
+
 func clear_logic():
 	# await end of frame to clear logic
 	await get_tree().process_frame
@@ -29,7 +37,7 @@ func clear_logic():
 
 func _process(_delta):
 	self.clear_logic.call_deferred()
-
+	
 static func get_pop_down(player_num: int) -> bool:
 	if not is_instance_valid(instance):
 		return false
@@ -102,6 +110,7 @@ func _on_quaternion(player_id, quat):
 		players_angles[player_id] = 0.0
 		if not player_id in player_ids:
 			player_ids.append(player_id)
+			player_added.emit(len(player_ids) - 1)
 	
 	var rotated_UP = quat * Vector3.UP
 	var normal = Vector3(0, 0, 1)
