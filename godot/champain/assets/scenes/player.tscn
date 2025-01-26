@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://b1qu7gq1j4y0u"]
+[gd_scene load_steps=16 format=3 uid="uid://b1qu7gq1j4y0u"]
 
 [ext_resource type="Script" path="res://assets/scripts/player_controller.gd" id="1_h6qqu"]
 [ext_resource type="Texture2D" uid="uid://ddty3uka0djv6" path="res://assets/graphics/players/green.png" id="2_41de8"]
@@ -10,7 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://vtlesceds08y" path="res://assets/graphics/ray.png" id="8_0givg"]
 [ext_resource type="PackedScene" uid="uid://ctc6ecnsm5i25" path="res://assets/scenes/bottle.tscn" id="9_nhphl"]
 [ext_resource type="FontFile" uid="uid://b8irqbncrt45c" path="res://assets/Quicksand-Bold.ttf" id="9_oi1mm"]
-[ext_resource type="AudioStream" uid="uid://dkiicu8wl8oqs" path="res://assets/sounds/spray.wav" id="11_y1roe"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_p470m"]
 friction = 0.0
@@ -24,6 +23,12 @@ font = ExtResource("9_oi1mm")
 font_size = 120
 outline_size = 20
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_nke1j"]
+random_pitch = 1.05
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_w6thy"]
+random_pitch = 1.1
 
 [node name="Player" type="RigidBody2D" node_paths=PackedStringArray("_sprite", "_label", "bottle")]
 physics_material_override = SubResource("PhysicsMaterial_p470m")
@@ -42,7 +47,7 @@ bottle = NodePath("bottle/bottle")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -19.25)
+position = Vector2(0, -19.3513)
 scale = Vector2(0.65, 0.65)
 texture = ExtResource("2_41de8")
 script = ExtResource("2_wabwe")
@@ -77,9 +82,10 @@ scale = Vector2(0.185, 0.185)
 position = Vector2(0, 0)
 
 [node name="AudioStreamPlayer_Spray" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("11_y1roe")
+stream = SubResource("AudioStreamRandomizer_nke1j")
 
 [node name="AudioStreamPlayer_Pop" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource("AudioStreamRandomizer_w6thy")
 
 [connection signal="on_start_spraying" from="." to="AudioStreamPlayer_Spray" method="play"]
 [connection signal="on_start_spraying" from="." to="AudioStreamPlayer_Pop" method="play"]

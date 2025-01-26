@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://dk3xg70mar83t"]
 
-[ext_resource type="PackedScene" path="res://assets/scenes/tiles.tscn" id="1_gi1io"]
+[ext_resource type="PackedScene" uid="uid://bb0gmvwsjot1o" path="res://assets/scenes/tiles.tscn" id="1_gi1io"]
 [ext_resource type="PackedScene" uid="uid://bhcrpvvrss881" path="res://assets/scenes/rectangle_wall.tscn" id="1_k8tx2"]
-[ext_resource type="PackedScene" path="res://assets/scenes/ball.tscn" id="2_hj2h3"]
+[ext_resource type="PackedScene" uid="uid://boq2gcuxxoc13" path="res://assets/scenes/ball.tscn" id="2_hj2h3"]
 [ext_resource type="FontFile" uid="uid://b8irqbncrt45c" path="res://assets/Quicksand-Bold.ttf" id="4_qa7mq"]
 [ext_resource type="FontFile" uid="uid://sr25emn68gvy" path="res://assets/Quicksand-Regular.ttf" id="5_c8ssn"]
 [ext_resource type="PackedScene" uid="uid://r363kwfebbi" path="res://assets/scenes/spawn.tscn" id="6_k8mo5"]
@@ -206,3 +206,6 @@ position = Vector2(264, 738)
 
 [node name="Spawn8" parent="SpawnPositions" instance=ExtResource("6_k8mo5")]
 position = Vector2(1544, 290)
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+position = Vector2(905, 501)
