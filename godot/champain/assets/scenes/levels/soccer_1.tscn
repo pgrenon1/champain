@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dwndwq4yhbf0x"]
+[gd_scene load_steps=12 format=3 uid="uid://dwndwq4yhbf0x"]
 
 [ext_resource type="PackedScene" uid="uid://bb0gmvwsjot1o" path="res://assets/scenes/tiles.tscn" id="1_gi1io"]
 [ext_resource type="PackedScene" uid="uid://bhcrpvvrss881" path="res://assets/scenes/rectangle_wall.tscn" id="1_k8tx2"]
@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://r363kwfebbi" path="res://assets/scenes/spawn.tscn" id="6_k8mo5"]
 [ext_resource type="Script" path="res://assets/scripts/soccer_gamemode.gd" id="7_kkrwa"]
 [ext_resource type="PackedScene" path="res://assets/scenes/goal.tscn" id="8_xr3rv"]
-[ext_resource type="Texture2D" uid="uid://b4difdaxqvtmk" path="res://assets/graphics/planet06.png" id="9_rdgav"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_7b7lr"]
 font = ExtResource("4_qa7mq")
@@ -27,68 +26,6 @@ font = ExtResource("4_qa7mq")
 font_size = 128
 outline_size = 20
 outline_color = Color(0, 0, 0, 1)
-
-[sub_resource type="Animation" id="Animation_gm2jh"]
-resource_name = "new_animation"
-length = 140.0
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = false
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 83.4, 138.733),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(-2936, 2274), Vector2(5904, -1516), Vector2(5904, -1516)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = false
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 83.4, 138.733),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [0.0, 0.427606, 0.427606]
-}
-
-[sub_resource type="Animation" id="Animation_p5b27"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-215, 1316)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.333358]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_s2tth"]
-_data = {
-"RESET": SubResource("Animation_p5b27"),
-"new_animation": SubResource("Animation_gm2jh")
-}
 
 [node name="Soccer1" type="Node2D"]
 position = Vector2(56, 30)
@@ -246,14 +183,3 @@ position = Vector2(264, 738)
 
 [node name="Spawn8" parent="SpawnPositions" instance=ExtResource("6_k8mo5")]
 position = Vector2(1544, 290)
-
-[node name="Planet06" type="Sprite2D" parent="."]
-z_index = -95
-position = Vector2(-215, 1316)
-rotation = 0.333358
-texture = ExtResource("9_rdgav")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Planet06"]
-libraries = {
-"": SubResource("AnimationLibrary_s2tth")
-}
