@@ -32,10 +32,8 @@ outline_color = Color(0, 0, 0, 1)
 [node name="Soccer1" type="Node2D"]
 position = Vector2(56, 30)
 
-[node name="SoccerGamemode" type="Node" parent="." node_paths=PackedStringArray("_ball", "_ball_spawn", "_score", "_timer", "_announcer")]
+[node name="SoccerGamemode" type="Node" parent="." node_paths=PackedStringArray("_score", "_timer", "_announcer")]
 script = ExtResource("7_kkrwa")
-_ball = NodePath("Ball")
-_ball_spawn = NodePath("BallSpawnPosition")
 _score = NodePath("UI/Score")
 _timer = NodePath("UI/Timer")
 _announcer = NodePath("UI/Announcer")
@@ -64,24 +62,24 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Score" type="Label" parent="SoccerGamemode/UI"]
-custom_minimum_size = Vector2(600, 0)
 layout_mode = 0
-offset_left = 632.0
-offset_top = 24.0
-offset_right = 1232.0
-offset_bottom = 199.0
-text = "0            0"
+offset_left = 800.0
+offset_top = 96.0
+offset_right = 1054.0
+offset_bottom = 271.0
+text = "2 - 0"
 label_settings = SubResource("LabelSettings_7b7lr")
 horizontal_alignment = 1
 
 [node name="Timer" type="Label" parent="SoccerGamemode/UI"]
 layout_mode = 0
-offset_left = 864.0
-offset_top = 48.0
-offset_right = 1118.0
-offset_bottom = 223.0
+offset_left = 800.0
+offset_top = 24.0
+offset_right = 1054.0
+offset_bottom = 199.0
 text = "3:00"
 label_settings = SubResource("LabelSettings_g61bn")
+horizontal_alignment = 1
 
 [node name="Announcer" type="Label" parent="SoccerGamemode/UI"]
 custom_minimum_size = Vector2(900, 0)
