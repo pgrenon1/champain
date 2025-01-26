@@ -836,8 +836,12 @@ private fun ConnectionPage(
     modifier: Modifier = Modifier
 ) {
     var showDialog by remember { mutableStateOf(false) }
-    var ipAddress by remember { mutableStateOf(connectionManager.getLastIpAddress() ?: "") }
-    var port by remember { mutableStateOf(connectionManager.getLastPort() ?: "") }
+    var ipAddress by remember { mutableStateOf(
+        connectionManager.getLastEnteredIpAddress() ?: ""
+    )}
+    var port by remember { mutableStateOf(
+        connectionManager.getLastEnteredPort() ?: ""
+    )}
     var connectionStatus by remember { mutableStateOf("Disconnected") }
     val deviceId = connectionManager.getDeviceId()
     val isConnected = connectionManager.isConnected()
@@ -907,14 +911,12 @@ private fun ConnectionPageContent(
             SettingsButton(
                 onClick = onConnect,
                 text = "Connect",
-                enabled = !isConnected,
                 modifier = Modifier.weight(1f)
             )
 
             SettingsButton(
                 onClick = onDisconnect,
                 text = "Disconnect",
-                enabled = isConnected,
                 modifier = Modifier.weight(1f)
             )
         }
