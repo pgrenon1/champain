@@ -9,7 +9,6 @@ extends Node2D
 
 @export var scale_fix = 1.0
 
-
 var shake_amount = 0.0
 var initial_position: Vector2
 var time: float = 0.0
@@ -57,3 +56,9 @@ func set_shake_value(value):
 
 func _on_wds_value_changed(value):
 	set_shake_value(value)
+	
+func set_spray_ratio(ratio: float):
+	$spray.set_amount_ratio(ratio)
+	
+func toggle_spray(value: bool):
+	$spray.toggle_particles(value)

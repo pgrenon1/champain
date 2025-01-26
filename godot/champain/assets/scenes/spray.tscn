@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://cnk030t54nelj"]
+[gd_scene load_steps=12 format=3 uid="uid://cnk030t54nelj"]
 
 [ext_resource type="Texture2D" uid="uid://betgsj4q5hrtw" path="res://assets/graphics/bubble.png" id="1_5dxhj"]
+[ext_resource type="Script" path="res://assets/scripts/spray.gd" id="1_du767"]
 
 [sub_resource type="Curve" id="Curve_y5yo4"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.9, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -36,7 +37,6 @@ curve = SubResource("Curve_n1u8m")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_74bkw"]
 particle_flag_disable_z = true
-inherit_velocity_ratio = 0.19
 direction = Vector3(0, 0, 0)
 spread = 15.426
 initial_velocity_min = 264.77
@@ -52,12 +52,16 @@ scale_min = 0.2
 scale_max = 0.8
 scale_curve = SubResource("CurveTexture_8jgjn")
 alpha_curve = SubResource("CurveTexture_uxpsy")
-turbulence_noise_strength = 3.52
+turbulence_enabled = true
+turbulence_noise_strength = 4.0
+turbulence_noise_scale = 2.919
+turbulence_noise_speed = Vector3(0, 1, 0)
 
 [node name="spray" type="Node2D"]
+script = ExtResource("1_du767")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-amount = 500
+amount = 1000
 process_material = SubResource("ParticleProcessMaterial_74bkw")
 texture = ExtResource("1_5dxhj")
 lifetime = 2.0

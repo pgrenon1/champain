@@ -39,7 +39,7 @@ _label = NodePath("Label")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -5.97844)
+position = Vector2(0, -7.13712)
 scale = Vector2(0.65, 0.65)
 texture = ExtResource("2_41de8")
 script = ExtResource("2_wabwe")
@@ -72,5 +72,6 @@ scale = Vector2(0.185, 0.185)
 
 [node name="bottle" parent="bottle" instance=ExtResource("9_nhphl")]
 position = Vector2(0, 0)
-scale = Vector2(1, 1)
-scale_fix = 1.0
+
+[connection signal="on_start_spraying" from="." to="bottle/bottle" method="toggle_spray" binds= [true]]
+[connection signal="on_stop_spraying" from="." to="bottle/bottle" method="toggle_spray" binds= [false]]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://ctc6ecnsm5i25"]
+[gd_scene load_steps=20 format=3 uid="uid://ctc6ecnsm5i25"]
 
 [ext_resource type="Script" path="res://assets/scripts/shake.gd" id="1_i2noj"]
 [ext_resource type="Texture2D" uid="uid://b3in88mww8ve6" path="res://assets/graphics/bottle/single_bulle.png" id="2_wi00y"]
@@ -10,6 +10,7 @@
 [ext_resource type="Shader" path="res://assets/shaders/mask.gdshader" id="7_qhta3"]
 [ext_resource type="Texture2D" uid="uid://bp33puh7o6xqp" path="res://assets/graphics/bottle/bottle_mask2.png" id="8_njoj0"]
 [ext_resource type="Script" path="res://assets/scripts/mask.gd" id="8_uytr1"]
+[ext_resource type="PackedScene" uid="uid://cnk030t54nelj" path="res://assets/scenes/spray.tscn" id="11_ibl2e"]
 
 [sub_resource type="Curve" id="Curve_tysf0"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.42572, 0.0, 0, 0]
@@ -51,12 +52,10 @@ shader_parameter/mask_texture = ExtResource("8_njoj0")
 [node name="bottle" type="Node2D"]
 position = Vector2(222, 404)
 rotation = -0.00689539
-scale = Vector2(1e-05, 1e-05)
 script = ExtResource("1_i2noj")
 max_shake_amount = 25.0
 is_shaking = true
 curve = SubResource("Curve_tysf0")
-scale_fix = null
 
 [node name="particles" type="GPUParticles2D" parent="." groups=["trailable_particles"]]
 light_mask = 2
@@ -112,6 +111,11 @@ step = 0.01
 
 [node name="mask2" type="Node2D" parent="."]
 script = ExtResource("8_uytr1")
+
+[node name="spray" parent="." instance=ExtResource("11_ibl2e")]
+position = Vector2(-13.3172, -244.098)
+rotation = -1.5708
+scale = Vector2(4, 4)
 
 [connection signal="value_changed" from="Control/wds" to="." method="_on_wds_value_changed"]
 [connection signal="value_changed" from="Control/wds" to="particles" method="_on_wds_value_changed"]

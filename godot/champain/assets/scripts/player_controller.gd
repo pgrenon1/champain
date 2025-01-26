@@ -24,6 +24,9 @@ var validated_checkpoints = []
 
 var player_controller
 
+signal on_start_spraying()
+signal on_stop_spraying()
+
 func _ready() -> void:
 	_original_scale = _sprite.scale
 	_label.text = str(_shake_count)
@@ -73,6 +76,7 @@ func _physics_process(delta: float) -> void:
 		apply_force(direction * _spray_force)
 		if _spray_timer <= 0:
 			_is_spraying = false
+			on_stop_spraying.emit()
 			_label.text = str(_shake_count)
 
 func _shake():
@@ -97,6 +101,7 @@ func _start_spraying(direction: Vector2):
 	apply_impulse(direction * impulse)
 	_shake_count = 0
 	sync_bottle_shake()
+	on_start_spraying.emit()
 
 func validate_checkpoint(checkpoint_id: int):
 	if !validated_checkpoints.has(checkpoint_id):
