@@ -8,6 +8,9 @@ func _ready():
 	var root = get_tree().root
 	# Using a negative index counts from the end, so this gets the last child node of `root`.
 	current_scene = root.get_child(-1)
+	var counter = load("res://assets/scenes/ip_label.tscn").instantiate()
+	add_child(counter)
+
 	
 func goto_scene(path):
 	# This function will usually be called from a signal callback,

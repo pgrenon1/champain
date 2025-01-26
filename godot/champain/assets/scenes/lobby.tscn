@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dibh127hh8np0"]
+[gd_scene load_steps=4 format=3 uid="uid://dibh127hh8np0"]
 
 [ext_resource type="PackedScene" uid="uid://r363kwfebbi" path="res://assets/scenes/spawn.tscn" id="1_7l3cp"]
 [ext_resource type="Script" path="res://assets/scripts/lobby.gd" id="1_68fj7"]
+[ext_resource type="PackedScene" uid="uid://bqosmevo3khjs" path="res://assets/scenes/main_menu.tscn" id="3_qjm6p"]
 
 [node name="Lobby" type="Node2D"]
 script = ExtResource("1_68fj7")
@@ -14,3 +15,16 @@ position = Vector2(264, 162)
 
 [node name="Spawn2" parent="spawn_positions" instance=ExtResource("1_7l3cp")]
 position = Vector2(264, 866)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainMenu" parent="Control" instance=ExtResource("3_qjm6p")]
+layout_mode = 1
