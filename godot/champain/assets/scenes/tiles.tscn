@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://bb0gmvwsjot1o"]
+[gd_scene load_steps=16 format=4 uid="uid://bb0gmvwsjot1o"]
 
 [ext_resource type="Texture2D" uid="uid://dmdqi552k3mcw" path="res://assets/graphics/purple.png" id="1_1vs3r"]
 [ext_resource type="Texture2D" uid="uid://n3c0o7ssly40" path="res://assets/graphics/sheet.png" id="2_hc085"]
@@ -95,6 +95,37 @@ _data = {
 "new_animation": SubResource("Animation_gm2jh")
 }
 
+[sub_resource type="Curve" id="Curve_kp67r"]
+min_value = -2.0
+max_value = 2.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ld7g8"]
+curve = SubResource("Curve_kp67r")
+
+[sub_resource type="Curve" id="Curve_ixi43"]
+min_value = -200.0
+max_value = 200.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 49.6474), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_gpu5m"]
+curve = SubResource("Curve_ixi43")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kdceq"]
+lifetime_randomness = 0.16
+particle_flag_disable_z = true
+orbit_velocity_min = -0.0709999
+orbit_velocity_max = 0.165
+orbit_velocity_curve = SubResource("CurveTexture_ld7g8")
+radial_velocity_min = 639.28
+radial_velocity_max = 749.99
+gravity = Vector3(0, 0, 0)
+radial_accel_curve = SubResource("CurveTexture_gpu5m")
+scale_min = 17.07
+scale_max = 101.0
+
 [node name="ENV" type="Node2D"]
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="."]
@@ -118,3 +149,9 @@ texture = ExtResource("3_25n1x")
 libraries = {
 "": SubResource("AnimationLibrary_s2tth")
 }
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+z_index = -95
+position = Vector2(2012, 1290)
+process_material = SubResource("ParticleProcessMaterial_kdceq")
+lifetime = 10.0
