@@ -41,7 +41,7 @@ bottle = NodePath("bottle/bottle")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -15.5248)
+position = Vector2(0, -7.88643)
 scale = Vector2(0.65, 0.65)
 texture = ExtResource("2_41de8")
 script = ExtResource("2_wabwe")
@@ -74,6 +74,9 @@ scale = Vector2(0.185, 0.185)
 
 [node name="bottle" parent="bottle" instance=ExtResource("9_nhphl")]
 position = Vector2(0, 0)
+max_shake_amount = 5.0
+shake_speed = 20.0
+is_shaking = false
 
 [connection signal="on_start_spraying" from="." to="bottle/bottle" method="toggle_spray" binds= [true]]
 [connection signal="on_stop_spraying" from="." to="bottle/bottle" method="toggle_spray" binds= [false]]
