@@ -10,7 +10,7 @@ bounce = 0.5
 [sub_resource type="CircleShape2D" id="CircleShape2D_7ghod"]
 radius = 253.18
 
-[node name="Player" type="RigidBody2D"]
+[node name="Player" type="RigidBody2D" node_paths=PackedStringArray("_sprite")]
 physics_material_override = SubResource("PhysicsMaterial_p470m")
 gravity_scale = 0.0
 can_sleep = false
@@ -18,6 +18,7 @@ lock_rotation = true
 linear_damp = 1.5
 script = ExtResource("1_h6qqu")
 speed = 700
+_sprite = NodePath("Sprite2D")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

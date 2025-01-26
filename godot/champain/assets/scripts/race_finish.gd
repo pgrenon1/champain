@@ -20,6 +20,5 @@ func add_checkpoint():
 func _entered(body):
 	if body is Player:
 		if body.validated_checkpoints.size() >= _checkpoint_count:
-			body.lap_count += 1
-			body.validated_checkpoints.clear()
-			print("player " + str(body.player_id) + " finishes lap " + str(body.lap_count))
+			body.validate_lap()
+			
