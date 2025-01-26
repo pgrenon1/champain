@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://b1qu7gq1j4y0u"]
+[gd_scene load_steps=25 format=3 uid="uid://b1qu7gq1j4y0u"]
 
 [ext_resource type="Script" path="res://assets/scripts/player_controller.gd" id="1_h6qqu"]
 [ext_resource type="Texture2D" uid="uid://ddty3uka0djv6" path="res://assets/graphics/players/green.png" id="2_41de8"]
@@ -12,6 +12,7 @@
 [ext_resource type="FontFile" uid="uid://b8irqbncrt45c" path="res://assets/Quicksand-Bold.ttf" id="9_oi1mm"]
 [ext_resource type="AudioStream" uid="uid://dkiicu8wl8oqs" path="res://assets/sounds/spray.wav" id="11_y1roe"]
 [ext_resource type="AudioStream" uid="uid://c0apxbp85clfn" path="res://assets/sounds/shake1.wav" id="12_57wyt"]
+[ext_resource type="AudioStream" uid="uid://dd0acft4oxt7x" path="res://assets/sounds/pop.wav" id="12_o4fgk"]
 [ext_resource type="AudioStream" uid="uid://w3kxdy48u14u" path="res://assets/sounds/shake2.wav" id="13_tfqnl"]
 [ext_resource type="AudioStream" uid="uid://ddg3mvkdda3em" path="res://assets/sounds/shake3.wav" id="14_hvmio"]
 [ext_resource type="AudioStream" uid="uid://crv6rpl4d6bie" path="res://assets/sounds/shake4.wav" id="15_odpys"]
@@ -35,6 +36,11 @@ outline_color = Color(0, 0, 0, 1)
 random_pitch = 1.05
 streams_count = 1
 stream_0/stream = ExtResource("11_y1roe")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_qycrj"]
+random_pitch = 1.1
+streams_count = 1
+stream_0/stream = ExtResource("12_o4fgk")
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_w6thy"]
 random_pitch = 1.1
@@ -63,7 +69,7 @@ bottle = NodePath("bottle/bottle")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -20.3124)
+position = Vector2(0, -17.6459)
 scale = Vector2(0.65, 0.65)
 texture = ExtResource("2_41de8")
 script = ExtResource("2_wabwe")
@@ -101,7 +107,8 @@ position = Vector2(0, 0)
 stream = SubResource("AudioStreamRandomizer_nke1j")
 
 [node name="AudioStreamPlayer_Pop" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource("AudioStreamRandomizer_w6thy")
+stream = SubResource("AudioStreamRandomizer_qycrj")
+volume_db = 3.839
 
 [node name="AudioStreamPlayer_Shake" type="AudioStreamPlayer2D" parent="."]
 unique_name_in_owner = true
