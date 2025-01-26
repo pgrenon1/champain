@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://r363kwfebbi"]
+
+[ext_resource type="Texture2D" uid="uid://cu57xwmw3sqsy" path="res://assets/graphics/circle.png" id="1_hfnxw"]
+
+[node name="Spawn" type="Node2D"]
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 0.9, 0, 1)
+scale = Vector2(0.02, 0.02)
+texture = ExtResource("1_hfnxw")
