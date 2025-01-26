@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://cp37mva8dbaxv"]
+
+[ext_resource type="ArrayMesh" uid="uid://bgtcimsgyrj4h" path="res://prototypage/models/stanford-bunny.obj" id="1_ba3uk"]
+[ext_resource type="Script" path="res://addons/godOSC/scripts/OSCServer.gd" id="1_pjnyr"]
+[ext_resource type="Script" path="res://prototypage/scripts/DebugDraw.gd" id="3_sd134"]
+[ext_resource type="Script" path="res://prototypage/scripts/osc_bunny.gd" id="3_ukqou"]
+
+[node name="3Dtest" type="Node3D"]
+
+[node name="OSCServer" type="Node3D" parent="."]
+script = ExtResource("1_pjnyr")
+
+[node name="Bunny" type="MeshInstance3D" parent="."]
+mesh = ExtResource("1_ba3uk")
+script = ExtResource("3_ukqou")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00668436, 0, 1.01695)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.547323, 1.91568)
+
+[node name="Node3D" type="Node3D" parent="." node_paths=PackedStringArray("other_node")]
+script = ExtResource("3_sd134")
+other_node = NodePath("../Bunny")
+
+[node name="Area2D" type="Area2D" parent="Node3D"]
+
+[connection signal="message_received" from="OSCServer" to="Bunny" method="_on_osc_server_message_received"]
