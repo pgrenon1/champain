@@ -33,10 +33,14 @@ func goal_scored(team_id: int):
 	_score_left.text = str(_team_scores[1])
 	_score_right.text = str(_team_scores[0])
 	_announcer.text = "GOAL!"
+
 	_ball.set_linear_velocity(Vector2())
 	_ball.set_angular_velocity(0.0)
 	_ball.global_translate(_ball_spawn.global_position - _ball.global_position)
 	SpawnManager.instance.respawn_all()
+	
+	await get_tree().create_timer(3).timeout
+	_announcer.visible  = false
 
 func _update_game_timer(delta: float):
 	_game_timer -= delta
