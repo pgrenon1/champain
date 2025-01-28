@@ -7,7 +7,7 @@
 [ext_resource type="FontFile" uid="uid://sr25emn68gvy" path="res://assets/Quicksand-Regular.ttf" id="5_c8ssn"]
 [ext_resource type="PackedScene" uid="uid://r363kwfebbi" path="res://assets/scenes/spawn.tscn" id="6_k8mo5"]
 [ext_resource type="Script" path="res://assets/scripts/soccer_gamemode.gd" id="7_kkrwa"]
-[ext_resource type="PackedScene" path="res://assets/scenes/goal.tscn" id="8_xr3rv"]
+[ext_resource type="PackedScene" uid="uid://ryrscuan21ce" path="res://assets/scenes/goal.tscn" id="8_xr3rv"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_yydjj"]
 font = ExtResource("4_qa7mq")
